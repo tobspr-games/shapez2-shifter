@@ -25,7 +25,7 @@ namespace ShapezShifter.Flow.Atomic
                 return gameScenario;
             }
 
-            ProgressionExtender.ExtendResearch(gameScenario.Progression, GroupId);
+            ProgressionExtender.ExtendResearch(gameScenario.UniqueId, gameScenario.Progression, GroupId);
             _AfterExtensionApplied.Invoke();
             return gameScenario;
         }

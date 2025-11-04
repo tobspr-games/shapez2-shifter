@@ -2,6 +2,7 @@
 {
     public interface IIslandResearchProgressionExtender
     {
-        void ExtendResearch(ResearchProgression researchProgression, IslandDefinitionGroupId groupId);
+        void ExtendResearch(string scenarioId, ResearchProgression researchProgression,
+            IslandDefinitionGroupId groupId);
     }
 }

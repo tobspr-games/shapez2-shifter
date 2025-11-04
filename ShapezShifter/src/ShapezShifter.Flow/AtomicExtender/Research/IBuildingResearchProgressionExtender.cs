@@ -2,6 +2,7 @@
 {
     public interface IBuildingResearchProgressionExtender
     {
-        void ExtendResearch(ResearchProgression researchProgression, BuildingDefinitionGroupId groupId);
+        void ExtendResearch(string scenarioId, ResearchProgression researchProgression,
+            BuildingDefinitionGroupId groupId);
     }
 }

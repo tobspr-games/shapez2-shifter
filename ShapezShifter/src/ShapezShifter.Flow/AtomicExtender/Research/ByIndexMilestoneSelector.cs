@@ -11,7 +11,8 @@ namespace ShapezShifter.Flow.Research
         {
             Index = index;
         }
-        public ResearchLevel Select(IReadOnlyList<ResearchLevel> milestones)
+
+        public ResearchLevel Select(string scenarioId, IReadOnlyList<ResearchLevel> milestones)
         {
             return milestones[Index];
         }

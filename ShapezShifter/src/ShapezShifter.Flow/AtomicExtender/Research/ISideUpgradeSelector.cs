@@ -4,6 +4,6 @@ namespace ShapezShifter.Flow.Atomic
 {
     public interface ISideUpgradeSelector
     {
-        public ResearchSideUpgrade Select(IReadOnlyList<ResearchSideUpgrade> milestones);
+        public ResearchSideUpgrade Select(string scenarioId, IReadOnlyList<ResearchSideUpgrade> milestones);
     }
 }

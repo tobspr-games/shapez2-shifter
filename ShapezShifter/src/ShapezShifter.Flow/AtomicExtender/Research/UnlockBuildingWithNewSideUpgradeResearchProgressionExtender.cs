@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using ShapezShifter.Flow.Atomic;
+﻿using ShapezShifter.Flow.Atomic;
 
 namespace ShapezShifter.Flow.Research
 {
@@ -13,9 +12,10 @@ namespace ShapezShifter.Flow.Research
             SideUpgradeBuilder = sideUpgradeBuilder;
         }
 
-        public void ExtendResearch(ResearchProgression researchProgression, BuildingDefinitionGroupId groupId)
+        public void ExtendResearch(string scenarioId, ResearchProgression researchProgression,
+            BuildingDefinitionGroupId groupId)
         {
-            ResearchSideUpgrade sideUpgrade = SideUpgradeBuilder.Build(researchProgression);
+            ResearchSideUpgrade sideUpgrade = SideUpgradeBuilder.Build(scenarioId, researchProgression);
             sideUpgrade.Rewards.Add(new ResearchRewardBuildingGroup(groupId));
         }
     }

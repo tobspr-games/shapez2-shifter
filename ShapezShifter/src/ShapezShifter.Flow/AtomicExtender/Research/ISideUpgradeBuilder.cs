@@ -62,14 +62,15 @@ namespace ShapezShifter.Flow.Atomic
             return this;
         }
 
-        public ResearchSideUpgrade Build(ResearchProgression progression)
+        public ResearchSideUpgrade Build(string scenarioId, ResearchProgression progression)
         {
             ResearchMechanicId[] mechanics = Mechanics;
             ResearchUpgradeId[] upgrades = Upgrades;
 
             if (CopyRequirementsSideUpgradeSelector != null)
             {
-                ResearchSideUpgrade sideUpgrade = CopyRequirementsSideUpgradeSelector.Select(progression.SideUpgrades);
+                ResearchSideUpgrade sideUpgrade =
+                    CopyRequirementsSideUpgradeSelector.Select(scenarioId, progression.SideUpgrades);
                 mechanics = sideUpgrade.RequiredMechanics.ToArray();
                 upgrades = sideUpgrade.RequiredUpgrades.ToArray();
             }
@@ -117,6 +118,6 @@ namespace ShapezShifter.Flow.Atomic
     public interface IPresentableUnlockableSideUpgradeBuilder
     {
         IPresentableUnlockableSideUpgradeBuilder WithAdditionalRewards(IEnumerable<IResearchReward> additionalRewards);
-        ResearchSideUpgrade Build(ResearchProgression progression);
+        ResearchSideUpgrade Build(string scenarioId, ResearchProgression progression);
     }
 }

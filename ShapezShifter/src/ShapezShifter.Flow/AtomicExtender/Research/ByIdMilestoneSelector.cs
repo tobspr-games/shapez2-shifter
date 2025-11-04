@@ -14,7 +14,7 @@ namespace ShapezShifter.Flow.Research
             MilestoneId = milestoneId;
         }
 
-        public ResearchLevel Select(IReadOnlyList<ResearchLevel> milestones)
+        public ResearchLevel Select(string scenarioId, IReadOnlyList<ResearchLevel> milestones)
         {
             try
             {
@@ -25,7 +25,6 @@ namespace ShapezShifter.Flow.Research
             {
                 throw new Exception($"More than one element match milestone id {MilestoneId}");
             }
-
         }
     }
 }
