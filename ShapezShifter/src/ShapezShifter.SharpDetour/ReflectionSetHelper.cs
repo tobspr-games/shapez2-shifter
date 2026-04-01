@@ -73,7 +73,7 @@ namespace ShapezShifter.SharpDetour
                 return false;
             }
 
-            if (parameter != expression.Parameters[0])
+            if (parameter != expression.Parameters[(Index)0])
             {
                 field = null;
                 return false;
@@ -104,7 +104,7 @@ namespace ShapezShifter.SharpDetour
                 return false;
             }
 
-            if (parameter != expression.Parameters[0])
+            if (parameter != expression.Parameters[(Index)0])
             {
                 property = null;
                 return false;
