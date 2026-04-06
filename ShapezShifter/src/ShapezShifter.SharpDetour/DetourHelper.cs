@@ -710,7 +710,7 @@ namespace ShapezShifter.SharpDetour
         }
 
         public static Hook CreateStaticPostfixHook<TObject, TArg0>(
-            Expression<Action<TObject, TArg0>> original,
+            Expression<Action<TArg0>> original,
             Action<TArg0> postfix)
         {
             MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
@@ -724,7 +724,7 @@ namespace ShapezShifter.SharpDetour
         }
 
         public static Hook CreateStaticPostfixHook<TObject, TArg0, TArg1>(
-            Expression<Action<TObject, TArg0, TArg1>> original,
+            Expression<Action<TArg0, TArg1>> original,
             Action<TArg0, TArg1> postfix)
         {
             MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
@@ -752,7 +752,7 @@ namespace ShapezShifter.SharpDetour
         }
 
         public static Hook CreateStaticPostfixHook<TObject, TArg0, TArg1, TArg2, TArg3>(
-            Expression<Action<TObject, TArg0, TArg1, TArg2, TArg3>> original,
+            Expression<Action<TArg0, TArg1, TArg2, TArg3>> original,
             Action<TArg0, TArg1, TArg2, TArg3> postfix)
         {
             MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
@@ -768,7 +768,7 @@ namespace ShapezShifter.SharpDetour
         }
 
         public static Hook CreateStaticPostfixHook<TObject, TArg0, TArg1, TArg2, TArg3, TArg4>(
-            Expression<Action<TObject, TArg0, TArg1, TArg2, TArg3, TArg4>> original,
+            Expression<Action<TArg0, TArg1, TArg2, TArg3, TArg4>> original,
             Action<TArg0, TArg1, TArg2, TArg3, TArg4> postfix)
         {
             MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
@@ -790,7 +790,7 @@ namespace ShapezShifter.SharpDetour
         }
 
         public static Hook CreateStaticPostfixHook<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5>(
-            Expression<Action<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5>> original,
+            Expression<Action<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5>> original,
             Action<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5> postfix)
         {
             MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
@@ -814,7 +814,7 @@ namespace ShapezShifter.SharpDetour
         }
 
         public static Hook CreateStaticPostfixHook<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6>(
-            Expression<Action<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6>> original,
+            Expression<Action<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6>> original,
             Action<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6> postfix)
         {
             MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
@@ -843,7 +843,7 @@ namespace ShapezShifter.SharpDetour
         #region Static Postfix with return (non-static class)
 
         public static Hook CreateStaticPostfixHook<TObject, TResult>(
-            Expression<Func<TObject, TResult>> original,
+            Expression<Func<TResult>> original,
             Func<TResult, TResult> postfix)
         {
             MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
@@ -857,7 +857,7 @@ namespace ShapezShifter.SharpDetour
         }
 
         public static Hook CreateStaticPostfixHook<TObject, TArg0, TResult>(
-            Expression<Func<TObject, TArg0, TResult>> original,
+            Expression<Func<TArg0, TResult>> original,
             Func<TArg0, TResult, TResult> postfix)
         {
             MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
@@ -871,7 +871,7 @@ namespace ShapezShifter.SharpDetour
         }
 
         public static Hook CreateStaticPostfixHook<TObject, TArg0, TArg1, TResult>(
-            Expression<Func<TObject, TArg0, TArg1, TResult>> original,
+            Expression<Func<TArg0, TArg1, TResult>> original,
             Func<TArg0, TArg1, TResult, TResult> postfix)
         {
             MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
@@ -885,7 +885,7 @@ namespace ShapezShifter.SharpDetour
         }
 
         public static Hook CreateStaticPostfixHook<TObject, TArg0, TArg1, TArg2, TResult>(
-            Expression<Func<TObject, TArg0, TArg1, TArg2, TResult>> original,
+            Expression<Func<TArg0, TArg1, TArg2, TResult>> original,
             Func<TArg0, TArg1, TArg2, TResult, TResult> postfix)
         {
             MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
@@ -901,7 +901,7 @@ namespace ShapezShifter.SharpDetour
         }
 
         public static Hook CreateStaticPostfixHook<TObject, TArg0, TArg1, TArg2, TArg3, TResult>(
-            Expression<Func<TObject, TArg0, TArg1, TArg2, TArg3, TResult>> original,
+            Expression<Func<TArg0, TArg1, TArg2, TArg3, TResult>> original,
             Func<TArg0, TArg1, TArg2, TArg3, TResult, TResult> postfix)
         {
             MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
@@ -922,7 +922,7 @@ namespace ShapezShifter.SharpDetour
         }
 
         public static Hook CreateStaticPostfixHook<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TResult>(
-            Expression<Func<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TResult>> original,
+            Expression<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TResult>> original,
             Func<TArg0, TArg1, TArg2, TArg3, TArg4, TResult, TResult> postfix)
         {
             MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
@@ -945,7 +945,7 @@ namespace ShapezShifter.SharpDetour
         }
 
         public static Hook CreateStaticPostfixHook<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult>(
-            Expression<Func<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult>> original,
+            Expression<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult>> original,
             Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult, TResult> postfix)
         {
             MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
@@ -969,7 +969,7 @@ namespace ShapezShifter.SharpDetour
         }
 
         public static Hook CreateStaticPostfixHook<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>(
-            Expression<Func<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>> original,
+            Expression<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>> original,
             Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult, TResult> postfix)
         {
             MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
