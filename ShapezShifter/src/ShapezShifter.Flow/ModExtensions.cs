@@ -11,42 +11,6 @@ namespace ShapezShifter.Flow
     public static class ModExtensions
     {
         /// <summary>
-        /// Creates a ModSaveData instance with automatic filename generation based on the mod's assembly.
-        /// </summary>
-        /// <typeparam name="T">The type of data to save/load</typeparam>
-        /// <param name="mod">The mod instance</param>
-        /// <param name="dataName">Optional custom name for the data file (defaults to "data")</param>
-        /// <returns>A configured ModSaveData instance and its Rewirer handle</returns>
-        public static (ModSaveData<T>, RewirerHandle) CreateSaveDataWithHandle<T>(
-            this IMod mod,
-            string dataName = "data")
-            where T : class, new()
-        {
-            // Generate filename from mod assembly name
-            string assemblyName = mod.GetType().Assembly.GetName().Name;
-            string fileName = $"{assemblyName}-{dataName}.json";
-
-            return ModSaveData<T>.Register(fileName);
-        }
-
-        /// <summary>
-        /// Creates a ModSaveData instance with automatic filename generation based on the mod's assembly.
-        /// </summary>
-        /// <typeparam name="T">The type of data to save/load</typeparam>
-        /// <param name="mod">The mod instance</param>
-        /// <param name="dataName">Optional custom name for the data file (defaults to "data")</param>
-        /// <returns>A configured ModSaveData instance</returns>
-        public static ModSaveData<T> CreateSaveData<T>(this IMod mod, string dataName = "data")
-            where T : class, new()
-        {
-            // Generate filename from mod assembly name
-            string assemblyName = mod.GetType().Assembly.GetName().Name;
-            string fileName = $"{assemblyName}-{dataName}.json";
-
-            return ModSaveData<T>.Register(fileName).Item1;
-        }
-
-        /// <summary>
         /// Register a console command for this mod
         /// </summary>
         /// <param name="mod">The mod instance</param>
