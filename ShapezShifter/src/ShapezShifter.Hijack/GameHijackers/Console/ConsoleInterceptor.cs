@@ -1,6 +1,5 @@
 #nullable enable
 using System;
-using System.Collections.Generic;
 using Core.Logging;
 using MonoMod.RuntimeDetour;
 using ShapezShifter.SharpDetour;
@@ -26,13 +25,13 @@ namespace ShapezShifter.Hijack
         {
             var console = orchestrator.DependencyContainer.Resolve<IDebugConsole>();
 
-            IEnumerable<IConsoleRewirer> consoleRewirers = RewirerProvider.RewirersOfType<IConsoleRewirer>();
+            var consoleRewirers = RewirerProvider.RewirersOfType<IConsoleRewirer>();
 
             foreach (IConsoleRewirer? consoleRewirer in consoleRewirers)
             {
                 try
                 {
-                    consoleRewirer.RegisterConsoleCommand(RegisterCommand);
+                    consoleRewirer.RegisterCommands(console);
                 }
                 catch (Exception ex)
                 {
