@@ -197,6 +197,177 @@ namespace ShapezShifterTests
 
         #endregion
 
+        #region Static prefix with no return
+
+        [Test]
+        public void StaticPrefixNoReturn_0Args()
+        {
+            using Hook hook = DetourHelper.CreateStaticPrefixHook<Target>(
+                original: t => Target.Sv0(),
+                prefix: () => { Target.SResult = 10; });
+            Target.Sv0();
+            Assert.That(actual: Target.SResult, expression: Is.EqualTo(11)); // prefix sets 10, orig adds 1
+        }
+
+        [Test]
+        public void StaticPrefixNoReturn_1Arg()
+        {
+            using Hook hook = DetourHelper.CreateStaticPrefixHook<Target, int>(
+                original: a => Target.Sv1(a),
+                prefix: a => a * 10);
+            Target.Sv1(5);
+            Assert.That(actual: Target.SResult, expression: Is.EqualTo(50));
+        }
+
+        [Test]
+        public void StaticPrefixNoReturn_2Args()
+        {
+            using Hook hook = DetourHelper.CreateStaticPrefixHook<Target, int, int>(
+                original: (a, b) => Target.Sv2(a, b),
+                prefix: (a, b) => (a * 10, b * 10));
+            Target.Sv2(a: 1, b: 2);
+            Assert.That(actual: Target.SResult, expression: Is.EqualTo(30));
+        }
+
+        [Test]
+        public void StaticPrefixNoReturn_3Args()
+        {
+            Expression<Action<Target, int, int, int>> original = (t, a, b, c) => Target.Sv3(a, b, c);
+            using Hook hook = DetourHelper.CreateStaticPrefixHook(
+                original: original,
+                prefix: (a, b, c) => (a * 10, b * 10, c * 10));
+            Target.Sv3(a: 1, b: 2, c: 3);
+            Assert.That(actual: Target.SResult, expression: Is.EqualTo(60));
+        }
+
+        [Test]
+        public void StaticPrefixNoReturn_4Args()
+        {
+            using Hook hook = DetourHelper.CreateStaticPrefixHook<Target, int, int, int, int>(
+                original: (a, b, c, d) => Target.Sv4(a, b, c, d),
+                prefix: (a, b, c, d) => (a * 10, b * 10, c * 10, d * 10));
+            Target.Sv4(a: 1, b: 2, c: 3, d: 4);
+            Assert.That(actual: Target.SResult, expression: Is.EqualTo(100));
+        }
+
+        [Test]
+        public void StaticPrefixNoReturn_5Args()
+        {
+            using Hook hook = DetourHelper.CreateStaticPrefixHook<Target, int, int, int, int, int>(
+                original: (a, b, c, d, e) => Target.Sv5(a, b, c, d, e),
+                prefix: (a, b, c, d, e) => (a * 10, b * 10, c * 10, d * 10, e * 10));
+            Target.Sv5(a: 1, b: 2, c: 3, d: 4, e: 5);
+            Assert.That(actual: Target.SResult, expression: Is.EqualTo(150));
+        }
+
+        [Test]
+        public void StaticPrefixNoReturn_6Args()
+        {
+            using Hook hook = DetourHelper.CreateStaticPrefixHook<Target, int, int, int, int, int, int>(
+                original: (a, b, c, d, e, f) => Target.Sv6(a, b, c, d, e, f),
+                prefix: (a, b, c, d, e, f) => (a * 10, b * 10, c * 10, d * 10, e * 10, f * 10));
+            Target.Sv6(a: 1, b: 2, c: 3, d: 4, e: 5, f: 6);
+            Assert.That(actual: Target.SResult, expression: Is.EqualTo(210));
+        }
+
+        [Test]
+        public void StaticPrefixNoReturn_7Args()
+        {
+            using Hook hook = DetourHelper.CreateStaticPrefixHook<Target, int, int, int, int, int, int, int>(
+                original: (a, b, c, d, e, f, g) => Target.Sv7(a, b, c, d, e, f, g),
+                prefix: (a, b, c, d, e, f, g) => (a * 10, b * 10, c * 10, d * 10, e * 10, f * 10, g * 10));
+            Target.Sv7(a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7);
+            Assert.That(actual: Target.SResult, expression: Is.EqualTo(280));
+        }
+
+        #endregion
+
+        #region Static prefix with return
+
+        [Test]
+        public void StaticPrefixWithReturn_0Args()
+        {
+            using Hook hook = DetourHelper.CreateStaticPrefixHook(
+                original: () => Target.Sr0(),
+                prefix: () => { Target.SResult = 1; });
+            int v = Target.Sr0();
+            Assert.That(actual: v, expression: Is.EqualTo(100));
+            Assert.That(actual: Target.SResult, expression: Is.EqualTo(1)); // prefix ran
+        }
+
+        [Test]
+        public void StaticPrefixWithReturn_1Arg()
+        {
+            using Hook hook = DetourHelper.CreateStaticPrefixHook(
+                original: a => Target.Sr1(a),
+                prefix: (int a) => a * 10);
+            int v = Target.Sr1(5);
+            Assert.That(actual: v, expression: Is.EqualTo(50));
+        }
+
+        [Test]
+        public void StaticPrefixWithReturn_2Args()
+        {
+            using Hook hook = DetourHelper.CreateStaticPrefixHook(
+                original: (a, b) => Target.Sr2(a, b),
+                prefix: (int a, int b) => (a * 10, b * 10));
+            int v = Target.Sr2(a: 1, b: 2);
+            Assert.That(actual: v, expression: Is.EqualTo(30));
+        }
+
+        [Test]
+        public void StaticPrefixWithReturn_3Args()
+        {
+            using Hook hook = DetourHelper.CreateStaticPrefixHook(
+                original: (a, b, c) => Target.Sr3(a, b, c),
+                prefix: (int a, int b, int c) => (a * 10, b * 10, c * 10));
+            int v = Target.Sr3(a: 1, b: 2, c: 3);
+            Assert.That(actual: v, expression: Is.EqualTo(60));
+        }
+
+        [Test]
+        public void StaticPrefixWithReturn_4Args()
+        {
+            using Hook hook = DetourHelper.CreateStaticPrefixHook(
+                original: (a, b, c, d) => Target.Sr4(a, b, c, d),
+                prefix: (int a, int b, int c, int d) => (a * 10, b * 10, c * 10, d * 10));
+            int v = Target.Sr4(a: 1, b: 2, c: 3, d: 4);
+            Assert.That(actual: v, expression: Is.EqualTo(100));
+        }
+
+        [Test]
+        public void StaticPrefixWithReturn_5Args()
+        {
+            using Hook hook = DetourHelper.CreateStaticPrefixHook(
+                original: (a, b, c, d, e) => Target.Sr5(a, b, c, d, e),
+                prefix: (int a, int b, int c, int d, int e) => (a * 10, b * 10, c * 10, d * 10, e * 10));
+            int v = Target.Sr5(a: 1, b: 2, c: 3, d: 4, e: 5);
+            Assert.That(actual: v, expression: Is.EqualTo(150));
+        }
+
+        [Test]
+        public void StaticPrefixWithReturn_6Args()
+        {
+            using Hook hook = DetourHelper.CreateStaticPrefixHook(
+                original: (a, b, c, d, e, f) => Target.Sr6(a, b, c, d, e, f),
+                prefix: (int a, int b, int c, int d, int e, int f) => (a * 10, b * 10, c * 10, d * 10, e * 10, f * 10));
+            int v = Target.Sr6(a: 1, b: 2, c: 3, d: 4, e: 5, f: 6);
+            Assert.That(actual: v, expression: Is.EqualTo(210));
+        }
+
+        [Test]
+        public void StaticPrefixWithReturn_7Args()
+        {
+            using Hook hook = DetourHelper.CreateStaticPrefixHook(
+                original: (a, b, c, d, e, f, g) => Target.Sr7(a, b, c, d, e, f, g),
+                prefix: (int a, int b, int c, int d, int e, int f, int g) =>
+                    (a * 10, b * 10, c * 10, d * 10, e * 10, f * 10, g * 10));
+            int v = Target.Sr7(a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7);
+            Assert.That(actual: v, expression: Is.EqualTo(280));
+        }
+
+        #endregion
+
         #region Postfix with no return
 
         [Test]
@@ -373,7 +544,7 @@ namespace ShapezShifterTests
 
         #endregion
 
-        #region Static Postfix with no return (non-static class)
+        #region Static Postfix with no return
 
         [Test]
         public void StaticPostfixNoReturn_0Args()
@@ -388,9 +559,9 @@ namespace ShapezShifterTests
         [Test]
         public void StaticPostfixNoReturn_1Arg()
         {
-            Expression<Action<int>> original = a => Target.Sv1(a);
-            Action<int> postfix = _ => { Target.SResult += 1000; };
-            using Hook hook = DetourHelper.CreateStaticPostfixHook<Target, int>(original: original, postfix: postfix);
+            using Hook hook = DetourHelper.CreateStaticPostfixHook(
+                original: (int a) => Target.Sv1(a),
+                postfix: (int _) => { Target.SResult += 1000; });
             Target.Sv1(5);
             Assert.That(actual: Target.SResult, expression: Is.EqualTo(1005));
         }
@@ -398,10 +569,9 @@ namespace ShapezShifterTests
         [Test]
         public void StaticPostfixNoReturn_2Args()
         {
-            Expression<Action<int, int>> original = (a, b) => Target.Sv2(a, b);
-            Action<int, int> postfix = (_, _) => { Target.SResult += 1000; };
-            using Hook hook =
-                DetourHelper.CreateStaticPostfixHook<Target, int, int>(original: original, postfix: postfix);
+            using Hook hook = DetourHelper.CreateStaticPostfixHook(
+                original: (int a, int b) => Target.Sv2(a, b),
+                postfix: (int _, int _) => { Target.SResult += 1000; });
             Target.Sv2(a: 1, b: 2);
             Assert.That(actual: Target.SResult, expression: Is.EqualTo(1003));
         }
@@ -409,9 +579,9 @@ namespace ShapezShifterTests
         [Test]
         public void StaticPostfixNoReturn_3Args()
         {
-            Expression<Action<Target, int, int, int>> original = (t, a, b, c) => Target.Sv3(a, b, c);
-            Action<int, int, int> postfix = (_, _, _) => { Target.SResult += 1000; };
-            using Hook hook = DetourHelper.CreateStaticPostfixHook(original: original, postfix: postfix);
+            using Hook hook = DetourHelper.CreateStaticPostfixHook(
+                original: (int a, int b, int c) => Target.Sv3(a, b, c),
+                postfix: (int _, int _, int _) => { Target.SResult += 1000; });
             Target.Sv3(a: 1, b: 2, c: 3);
             Assert.That(actual: Target.SResult, expression: Is.EqualTo(1006));
         }
@@ -419,10 +589,9 @@ namespace ShapezShifterTests
         [Test]
         public void StaticPostfixNoReturn_4Args()
         {
-            Expression<Action<int, int, int, int>> original = (a, b, c, d) => Target.Sv4(a, b, c, d);
-            Action<int, int, int, int> postfix = (_, _, _, _) => { Target.SResult += 1000; };
-            using Hook hook =
-                DetourHelper.CreateStaticPostfixHook<Target, int, int, int, int>(original: original, postfix: postfix);
+            using Hook hook = DetourHelper.CreateStaticPostfixHook(
+                original: (int a, int b, int c, int d) => Target.Sv4(a, b, c, d),
+                postfix: (int _, int _, int _, int _) => { Target.SResult += 1000; });
             Target.Sv4(a: 1, b: 2, c: 3, d: 4);
             Assert.That(actual: Target.SResult, expression: Is.EqualTo(1010));
         }
@@ -430,12 +599,9 @@ namespace ShapezShifterTests
         [Test]
         public void StaticPostfixNoReturn_5Args()
         {
-            Expression<Action<int, int, int, int, int>> original = (a, b, c, d, e) => Target.Sv5(a, b, c, d, e);
-            Action<int, int, int, int, int> postfix = (_, _, _, _, _) => { Target.SResult += 1000; };
-            using Hook hook =
-                DetourHelper.CreateStaticPostfixHook<Target, int, int, int, int, int>(
-                    original: original,
-                    postfix: postfix);
+            using Hook hook = DetourHelper.CreateStaticPostfixHook(
+                original: (int a, int b, int c, int d, int e) => Target.Sv5(a, b, c, d, e),
+                postfix: (int _, int _, int _, int _, int _) => { Target.SResult += 1000; });
             Target.Sv5(a: 1, b: 2, c: 3, d: 4, e: 5);
             Assert.That(actual: Target.SResult, expression: Is.EqualTo(1015));
         }
@@ -443,13 +609,9 @@ namespace ShapezShifterTests
         [Test]
         public void StaticPostfixNoReturn_6Args()
         {
-            Expression<Action<int, int, int, int, int, int>> original = (a, b, c, d, e, f) =>
-                Target.Sv6(a, b, c, d, e, f);
-            Action<int, int, int, int, int, int> postfix = (_, _, _, _, _, _) => { Target.SResult += 1000; };
-            using Hook hook =
-                DetourHelper.CreateStaticPostfixHook<Target, int, int, int, int, int, int>(
-                    original: original,
-                    postfix: postfix);
+            using Hook hook = DetourHelper.CreateStaticPostfixHook(
+                original: (int a, int b, int c, int d, int e, int f) => Target.Sv6(a, b, c, d, e, f),
+                postfix: (int _, int _, int _, int _, int _, int _) => { Target.SResult += 1000; });
             Target.Sv6(a: 1, b: 2, c: 3, d: 4, e: 5, f: 6);
             Assert.That(actual: Target.SResult, expression: Is.EqualTo(1021));
         }
@@ -457,240 +619,87 @@ namespace ShapezShifterTests
         [Test]
         public void StaticPostfixNoReturn_7Args()
         {
-            Expression<Action<int, int, int, int, int, int, int>> original = (a, b, c, d, e, f, g) =>
-                Target.Sv7(a, b, c, d, e, f, g);
-            Action<int, int, int, int, int, int, int> postfix = (_, _, _, _, _, _, _) => { Target.SResult += 1000; };
-            using Hook hook =
-                DetourHelper.CreateStaticPostfixHook<Target, int, int, int, int, int, int, int>(
-                    original: original,
-                    postfix: postfix);
+            using Hook hook = DetourHelper.CreateStaticPostfixHook(
+                original: (int a, int b, int c, int d, int e, int f, int g) => Target.Sv7(a, b, c, d, e, f, g),
+                postfix: (int _, int _, int _, int _, int _, int _, int _) => { Target.SResult += 1000; });
             Target.Sv7(a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7);
             Assert.That(actual: Target.SResult, expression: Is.EqualTo(1028));
         }
 
         #endregion
 
-        #region Static Postfix with return (non-static class)
+        #region Static Postfix with return
 
         [Test]
         public void StaticPostfixWithReturn_0Args()
         {
-            Expression<Func<int>> original = () => Target.Sr0();
-            Func<int, int> postfix = value => value * 2;
-            using Hook hook = DetourHelper.CreateStaticPostfixHook<Target, int>(original: original, postfix: postfix);
-            Assert.That(actual: Target.Sr0(), expression: Is.EqualTo(200));
-        }
-
-        [Test]
-        public void StaticPostfixWithReturn_1Arg()
-        {
-            Expression<Func<int, int>> original = a => Target.Sr1(a);
-            Func<int, int, int> postfix = (_, value) => value * 2;
-            using Hook hook =
-                DetourHelper.CreateStaticPostfixHook<Target, int, int>(original: original, postfix: postfix);
-            Assert.That(actual: Target.Sr1(7), expression: Is.EqualTo(14));
-        }
-
-        [Test]
-        public void StaticPostfixWithReturn_2Args()
-        {
-            Expression<Func<int, int, int>> original = (a, b) => Target.Sr2(a, b);
-            Func<int, int, int, int> postfix = (_, _, value) => value * 2;
-            using Hook hook =
-                DetourHelper.CreateStaticPostfixHook<Target, int, int, int>(original: original, postfix: postfix);
-            Assert.That(actual: Target.Sr2(a: 3, b: 4), expression: Is.EqualTo(14));
-        }
-
-        [Test]
-        public void StaticPostfixWithReturn_3Args()
-        {
-            Expression<Func<int, int, int, int>> original = (a, b, c) => Target.Sr3(a, b, c);
-            Func<int, int, int, int, int> postfix = (_, _, _, value) => value * 2;
-            using Hook hook =
-                DetourHelper.CreateStaticPostfixHook<Target, int, int, int, int>(original: original, postfix: postfix);
-            Assert.That(actual: Target.Sr3(a: 1, b: 2, c: 3), expression: Is.EqualTo(12));
-        }
-
-        [Test]
-        public void StaticPostfixWithReturn_4Args()
-        {
-            Expression<Func<int, int, int, int, int>> original = (a, b, c, d) => Target.Sr4(a, b, c, d);
-            Func<int, int, int, int, int, int> postfix = (_, _, _, _, value) => value * 2;
-            using Hook hook =
-                DetourHelper.CreateStaticPostfixHook<Target, int, int, int, int, int>(
-                    original: original,
-                    postfix: postfix);
-            Assert.That(actual: Target.Sr4(a: 1, b: 2, c: 3, d: 4), expression: Is.EqualTo(20));
-        }
-
-        [Test]
-        public void StaticPostfixWithReturn_5Args()
-        {
-            Expression<Func<int, int, int, int, int, int>> original = (a, b, c, d, e) => Target.Sr5(a, b, c, d, e);
-            Func<int, int, int, int, int, int, int> postfix = (_, _, _, _, _, value) => value * 2;
-            using Hook hook =
-                DetourHelper.CreateStaticPostfixHook<Target, int, int, int, int, int, int>(
-                    original: original,
-                    postfix: postfix);
-            Assert.That(actual: Target.Sr5(a: 1, b: 2, c: 3, d: 4, e: 5), expression: Is.EqualTo(30));
-        }
-
-        [Test]
-        public void StaticPostfixWithReturn_6Args()
-        {
-            Expression<Func<int, int, int, int, int, int, int>> original = (a, b, c, d, e, f) =>
-                Target.Sr6(a, b, c, d, e, f);
-            Func<int, int, int, int, int, int, int, int> postfix = (_, _, _, _, _, _, value) => value * 2;
-            using Hook hook =
-                DetourHelper.CreateStaticPostfixHook<Target, int, int, int, int, int, int, int>(
-                    original: original,
-                    postfix: postfix);
-            Assert.That(actual: Target.Sr6(a: 1, b: 2, c: 3, d: 4, e: 5, f: 6), expression: Is.EqualTo(42));
-        }
-
-        [Test]
-        public void StaticPostfixWithReturn_7Args()
-        {
-            Expression<Func<int, int, int, int, int, int, int, int>> original = (a, b, c, d, e, f, g) =>
-                Target.Sr7(a, b, c, d, e, f, g);
-            Func<int, int, int, int, int, int, int, int, int> postfix = (_, _, _, _, _, _, _, value) => value * 2;
-            using Hook hook =
-                DetourHelper.CreateStaticPostfixHook<Target, int, int, int, int, int, int, int, int>(
-                    original: original,
-                    postfix: postfix);
-            Assert.That(actual: Target.Sr7(a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7), expression: Is.EqualTo(56));
-        }
-
-        #endregion
-
-        #region Static Postfix with return (Type param)
-
-        [Test]
-        public void StaticPostfixWithReturnType_0Args()
-        {
             using Hook hook = DetourHelper.CreateStaticPostfixHook(
-                type: typeof(Target),
                 original: () => Target.Sr0(),
                 postfix: value => value * 3);
             Assert.That(actual: Target.Sr0(), expression: Is.EqualTo(300));
         }
 
         [Test]
-        public void StaticPostfixWithReturnType_1Arg()
+        public void StaticPostfixWithReturn_1Arg()
         {
             using Hook hook = DetourHelper.CreateStaticPostfixHook(
-                type: typeof(Target),
                 original: a => Target.Sr1(a),
                 postfix: (int _, int value) => value * 3);
             Assert.That(actual: Target.Sr1(5), expression: Is.EqualTo(15));
         }
 
         [Test]
-        public void StaticPostfixWithReturnType_2Args()
+        public void StaticPostfixWithReturn_2Args()
         {
             using Hook hook = DetourHelper.CreateStaticPostfixHook(
-                type: typeof(Target),
                 original: (a, b) => Target.Sr2(a, b),
                 postfix: (int _, int _, int value) => value * 3);
             Assert.That(actual: Target.Sr2(a: 3, b: 4), expression: Is.EqualTo(21));
         }
 
         [Test]
-        public void StaticPostfixWithReturnType_3Args()
+        public void StaticPostfixWithReturn_3Args()
         {
             using Hook hook = DetourHelper.CreateStaticPostfixHook(
-                type: typeof(Target),
                 original: (a, b, c) => Target.Sr3(a, b, c),
                 postfix: (int _, int _, int _, int value) => value * 3);
             Assert.That(actual: Target.Sr3(a: 1, b: 2, c: 3), expression: Is.EqualTo(18));
         }
 
         [Test]
-        public void StaticPostfixWithReturnType_4Args()
+        public void StaticPostfixWithReturn_4Args()
         {
             using Hook hook = DetourHelper.CreateStaticPostfixHook(
-                type: typeof(Target),
                 original: (a, b, c, d) => Target.Sr4(a, b, c, d),
                 postfix: (int _, int _, int _, int _, int value) => value * 3);
             Assert.That(actual: Target.Sr4(a: 1, b: 2, c: 3, d: 4), expression: Is.EqualTo(30));
         }
 
         [Test]
-        public void StaticPostfixWithReturnType_5Args()
+        public void StaticPostfixWithReturn_5Args()
         {
             using Hook hook = DetourHelper.CreateStaticPostfixHook(
-                type: typeof(Target),
                 original: (a, b, c, d, e) => Target.Sr5(a, b, c, d, e),
                 postfix: (int _, int _, int _, int _, int _, int value) => value * 3);
             Assert.That(actual: Target.Sr5(a: 1, b: 2, c: 3, d: 4, e: 5), expression: Is.EqualTo(45));
         }
 
         [Test]
-        public void StaticPostfixWithReturnType_6Args()
+        public void StaticPostfixWithReturn_6Args()
         {
             using Hook hook = DetourHelper.CreateStaticPostfixHook(
-                type: typeof(Target),
                 original: (a, b, c, d, e, f) => Target.Sr6(a, b, c, d, e, f),
                 postfix: (int _, int _, int _, int _, int _, int _, int value) => value * 3);
             Assert.That(actual: Target.Sr6(a: 1, b: 2, c: 3, d: 4, e: 5, f: 6), expression: Is.EqualTo(63));
         }
 
         [Test]
-        public void StaticPostfixWithReturnType_7Args()
+        public void StaticPostfixWithReturn_7Args()
         {
             using Hook hook = DetourHelper.CreateStaticPostfixHook(
-                type: typeof(Target),
                 original: (a, b, c, d, e, f, g) => Target.Sr7(a, b, c, d, e, f, g),
                 postfix: (int _, int _, int _, int _, int _, int _, int _, int value) => value * 3);
             Assert.That(actual: Target.Sr7(a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7), expression: Is.EqualTo(84));
-        }
-
-        #endregion
-
-        #region Static Postfix with return (static class, Type param + TObject)
-
-        [Test]
-        public void PostfixWithReturnStaticClass_4Args()
-        {
-            var t = new Target();
-            using Hook hook = DetourHelper.CreatePostfixHook<Target, int, int, int, int, int>(
-                type: typeof(Target),
-                original: (t2, a, b, c, d) => t2.R4(a, b, c, d),
-                postfix: (_, _, _, _, _, value) => value * 2);
-            Assert.That(actual: t.R4(a: 1, b: 2, c: 3, d: 4), expression: Is.EqualTo(20));
-        }
-
-        [Test]
-        public void PostfixWithReturnStaticClass_5Args()
-        {
-            var t = new Target();
-            using Hook hook = DetourHelper.CreatePostfixHook<Target, int, int, int, int, int, int>(
-                type: typeof(Target),
-                original: (t2, a, b, c, d, e) => t2.R5(a, b, c, d, e),
-                postfix: (_, _, _, _, _, _, value) => value * 2);
-            Assert.That(actual: t.R5(a: 1, b: 2, c: 3, d: 4, e: 5), expression: Is.EqualTo(30));
-        }
-
-        [Test]
-        public void PostfixWithReturnStaticClass_6Args()
-        {
-            var t = new Target();
-            using Hook hook = DetourHelper.CreatePostfixHook<Target, int, int, int, int, int, int, int>(
-                type: typeof(Target),
-                original: (t2, a, b, c, d, e, f) => t2.R6(a, b, c, d, e, f),
-                postfix: (_, _, _, _, _, _, _, value) => value * 2);
-            Assert.That(actual: t.R6(a: 1, b: 2, c: 3, d: 4, e: 5, f: 6), expression: Is.EqualTo(42));
-        }
-
-        [Test]
-        public void PostfixWithReturnStaticClass_7Args()
-        {
-            var t = new Target();
-            using Hook hook = DetourHelper.CreatePostfixHook<Target, int, int, int, int, int, int, int, int>(
-                type: typeof(Target),
-                original: (t2, a, b, c, d, e, f, g) => t2.R7(a, b, c, d, e, f, g),
-                postfix: (_, _, _, _, _, _, _, _, value) => value * 2);
-            Assert.That(actual: t.R7(a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7), expression: Is.EqualTo(56));
         }
 
         #endregion
@@ -703,7 +712,7 @@ namespace ShapezShifterTests
             var t = new Target();
             using Hook hook = DetourHelper.Skip<Target>(t2 => t2.V0());
             t.V0();
-            Assert.That(actual: t.Result, expression: Is.EqualTo(0)); // orig not called
+            Assert.That(actual: t.Result, expression: Is.Zero); // orig not called
         }
 
         [Test]
@@ -712,7 +721,7 @@ namespace ShapezShifterTests
             var t = new Target();
             using Hook hook = DetourHelper.Skip<Target, int>((t2, a) => t2.V1(a));
             t.V1(99);
-            Assert.That(actual: t.Result, expression: Is.EqualTo(0));
+            Assert.That(actual: t.Result, expression: Is.Zero);
         }
 
         [Test]
@@ -721,7 +730,7 @@ namespace ShapezShifterTests
             var t = new Target();
             using Hook hook = DetourHelper.Skip<Target, int, int>((t2, a, b) => t2.V2(a, b));
             t.V2(a: 1, b: 2);
-            Assert.That(actual: t.Result, expression: Is.EqualTo(0));
+            Assert.That(actual: t.Result, expression: Is.Zero);
         }
 
         [Test]
@@ -730,7 +739,7 @@ namespace ShapezShifterTests
             var t = new Target();
             using Hook hook = DetourHelper.Skip<Target, int, int, int>((t2, a, b, c) => t2.V3(a, b, c));
             t.V3(a: 1, b: 2, c: 3);
-            Assert.That(actual: t.Result, expression: Is.EqualTo(0));
+            Assert.That(actual: t.Result, expression: Is.Zero);
         }
 
         [Test]
@@ -739,7 +748,7 @@ namespace ShapezShifterTests
             var t = new Target();
             using Hook hook = DetourHelper.Skip<Target, int, int, int, int>((t2, a, b, c, d) => t2.V4(a, b, c, d));
             t.V4(a: 1, b: 2, c: 3, d: 4);
-            Assert.That(actual: t.Result, expression: Is.EqualTo(0));
+            Assert.That(actual: t.Result, expression: Is.Zero);
         }
 
         [Test]
@@ -749,7 +758,7 @@ namespace ShapezShifterTests
             using Hook hook = DetourHelper.Skip<Target, int, int, int, int, int>(
                 (t2, a, b, c, d, e) => t2.V5(a, b, c, d, e));
             t.V5(a: 1, b: 2, c: 3, d: 4, e: 5);
-            Assert.That(actual: t.Result, expression: Is.EqualTo(0));
+            Assert.That(actual: t.Result, expression: Is.Zero);
         }
 
         [Test]
@@ -759,7 +768,7 @@ namespace ShapezShifterTests
             using Hook hook = DetourHelper.Skip<Target, int, int, int, int, int, int>(
                 (t2, a, b, c, d, e, f) => t2.V6(a, b, c, d, e, f));
             t.V6(a: 1, b: 2, c: 3, d: 4, e: 5, f: 6);
-            Assert.That(actual: t.Result, expression: Is.EqualTo(0));
+            Assert.That(actual: t.Result, expression: Is.Zero);
         }
 
         [Test]
@@ -769,7 +778,7 @@ namespace ShapezShifterTests
             using Hook hook = DetourHelper.Skip<Target, int, int, int, int, int, int, int>(
                 (t2, a, b, c, d, e, f, g) => t2.V7(a, b, c, d, e, f, g));
             t.V7(a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7);
-            Assert.That(actual: t.Result, expression: Is.EqualTo(0));
+            Assert.That(actual: t.Result, expression: Is.Zero);
         }
 
         #endregion
@@ -862,6 +871,321 @@ namespace ShapezShifterTests
                 replacement: (self, a, b, c, d, e, f, g) => { self.Result = (a + b + c + d + e + f + g) * 100; });
             t.V7(a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7);
             Assert.That(actual: t.Result, expression: Is.EqualTo(2800));
+        }
+
+        #endregion
+
+        #region Static skip with no return
+
+        [Test]
+        public void StaticSkip_0Args()
+        {
+            using Hook hook = DetourHelper.StaticSkip(() => Target.Sv0());
+            Target.Sv0();
+            Assert.That(actual: Target.SResult, expression: Is.Zero);
+        }
+
+        [Test]
+        public void StaticSkip_1Arg()
+        {
+            using Hook hook = DetourHelper.StaticSkip<int>(a => Target.Sv1(a));
+            Target.Sv1(99);
+            Assert.That(actual: Target.SResult, expression: Is.Zero);
+        }
+
+        [Test]
+        public void StaticSkip_2Args()
+        {
+            using Hook hook = DetourHelper.StaticSkip<int, int>((a, b) => Target.Sv2(a, b));
+            Target.Sv2(a: 1, b: 2);
+            Assert.That(actual: Target.SResult, expression: Is.Zero);
+        }
+
+        [Test]
+        public void StaticSkip_3Args()
+        {
+            using Hook hook = DetourHelper.StaticSkip<int, int, int>((a, b, c) => Target.Sv3(a, b, c));
+            Target.Sv3(a: 1, b: 2, c: 3);
+            Assert.That(actual: Target.SResult, expression: Is.Zero);
+        }
+
+        [Test]
+        public void StaticSkip_4Args()
+        {
+            using Hook hook = DetourHelper.StaticSkip<int, int, int, int>((a, b, c, d) => Target.Sv4(a, b, c, d));
+            Target.Sv4(a: 1, b: 2, c: 3, d: 4);
+            Assert.That(actual: Target.SResult, expression: Is.Zero);
+        }
+
+        [Test]
+        public void StaticSkip_5Args()
+        {
+            using Hook hook = DetourHelper.StaticSkip<int, int, int, int, int>(
+                (a, b, c, d, e) => Target.Sv5(a, b, c, d, e));
+            Target.Sv5(a: 1, b: 2, c: 3, d: 4, e: 5);
+            Assert.That(actual: Target.SResult, expression: Is.Zero);
+        }
+
+        [Test]
+        public void StaticSkip_6Args()
+        {
+            using Hook hook = DetourHelper.StaticSkip<int, int, int, int, int, int>(
+                (a, b, c, d, e, f) => Target.Sv6(a, b, c, d, e, f));
+            Target.Sv6(a: 1, b: 2, c: 3, d: 4, e: 5, f: 6);
+            Assert.That(actual: Target.SResult, expression: Is.Zero);
+        }
+
+        [Test]
+        public void StaticSkip_7Args()
+        {
+            using Hook hook = DetourHelper.StaticSkip<int, int, int, int, int, int, int>(
+                (a, b, c, d, e, f, g) => Target.Sv7(a, b, c, d, e, f, g));
+            Target.Sv7(a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7);
+            Assert.That(actual: Target.SResult, expression: Is.Zero);
+        }
+
+        #endregion
+
+        #region Replace with return
+
+        [Test]
+        public void ReplaceWithReturn_0Args()
+        {
+            var t = new Target();
+            using Hook hook = DetourHelper.Replace<Target, int>(original: t2 => t2.R0(), replacement: self => 999);
+            Assert.That(actual: t.R0(), expression: Is.EqualTo(999));
+        }
+
+        [Test]
+        public void ReplaceWithReturn_1Arg()
+        {
+            var t = new Target();
+            using Hook hook = DetourHelper.Replace<Target, int, int>(
+                original: (t2, a) => t2.R1(a),
+                replacement: (self, a) => a * 100);
+            Assert.That(actual: t.R1(5), expression: Is.EqualTo(500));
+        }
+
+        [Test]
+        public void ReplaceWithReturn_2Args()
+        {
+            var t = new Target();
+            using Hook hook = DetourHelper.Replace<Target, int, int, int>(
+                original: (t2, a, b) => t2.R2(a, b),
+                replacement: (self, a, b) => (a + b) * 100);
+            Assert.That(actual: t.R2(a: 1, b: 2), expression: Is.EqualTo(300));
+        }
+
+        [Test]
+        public void ReplaceWithReturn_3Args()
+        {
+            var t = new Target();
+            using Hook hook = DetourHelper.Replace<Target, int, int, int, int>(
+                original: (t2, a, b, c) => t2.R3(a, b, c),
+                replacement: (self, a, b, c) => (a + b + c) * 100);
+            Assert.That(actual: t.R3(a: 1, b: 2, c: 3), expression: Is.EqualTo(600));
+        }
+
+        [Test]
+        public void ReplaceWithReturn_4Args()
+        {
+            var t = new Target();
+            using Hook hook = DetourHelper.Replace<Target, int, int, int, int, int>(
+                original: (t2, a, b, c, d) => t2.R4(a, b, c, d),
+                replacement: (self, a, b, c, d) => (a + b + c + d) * 100);
+            Assert.That(actual: t.R4(a: 1, b: 2, c: 3, d: 4), expression: Is.EqualTo(1000));
+        }
+
+        [Test]
+        public void ReplaceWithReturn_5Args()
+        {
+            var t = new Target();
+            using Hook hook = DetourHelper.Replace<Target, int, int, int, int, int, int>(
+                original: (t2, a, b, c, d, e) => t2.R5(a, b, c, d, e),
+                replacement: (self, a, b, c, d, e) => (a + b + c + d + e) * 100);
+            Assert.That(actual: t.R5(a: 1, b: 2, c: 3, d: 4, e: 5), expression: Is.EqualTo(1500));
+        }
+
+        [Test]
+        public void ReplaceWithReturn_6Args()
+        {
+            var t = new Target();
+            using Hook hook = DetourHelper.Replace<Target, int, int, int, int, int, int, int>(
+                original: (t2, a, b, c, d, e, f) => t2.R6(a, b, c, d, e, f),
+                replacement: (self, a, b, c, d, e, f) => (a + b + c + d + e + f) * 100);
+            Assert.That(actual: t.R6(a: 1, b: 2, c: 3, d: 4, e: 5, f: 6), expression: Is.EqualTo(2100));
+        }
+
+        [Test]
+        public void ReplaceWithReturn_7Args()
+        {
+            var t = new Target();
+            using Hook hook = DetourHelper.Replace<Target, int, int, int, int, int, int, int, int>(
+                original: (t2, a, b, c, d, e, f, g) => t2.R7(a, b, c, d, e, f, g),
+                replacement: (_, a, b, c, d, e, f, g) => (a + b + c + d + e + f + g) * 100);
+            Assert.That(actual: t.R7(a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7), expression: Is.EqualTo(2800));
+        }
+
+        #endregion
+
+        #region Static replace with no return
+
+        [Test]
+        public void StaticReplace_0Args()
+        {
+            using Hook hook = DetourHelper.StaticReplace<Target>(
+                original: t => Target.Sv0(),
+                replacement: () => { Target.SResult = 999; });
+            Target.Sv0();
+            Assert.That(actual: Target.SResult, expression: Is.EqualTo(999));
+        }
+
+        [Test]
+        public void StaticReplace_1Arg()
+        {
+            using Hook hook = DetourHelper.StaticReplace(
+                original: a => Target.Sv1(a),
+                replacement: (int a) => { Target.SResult = a * 100; });
+            Target.Sv1(5);
+            Assert.That(actual: Target.SResult, expression: Is.EqualTo(500));
+        }
+
+        [Test]
+        public void StaticReplace_2Args()
+        {
+            using Hook hook = DetourHelper.StaticReplace(
+                original: (a, b) => Target.Sv2(a, b),
+                replacement: (int a, int b) => { Target.SResult = (a + b) * 100; });
+            Target.Sv2(a: 1, b: 2);
+            Assert.That(actual: Target.SResult, expression: Is.EqualTo(300));
+        }
+
+        [Test]
+        public void StaticReplace_3Args()
+        {
+            using Hook hook = DetourHelper.StaticReplace(
+                original: (a, b, c) => Target.Sv3(a, b, c),
+                replacement: (int a, int b, int c) => { Target.SResult = (a + b + c) * 100; });
+            Target.Sv3(a: 1, b: 2, c: 3);
+            Assert.That(actual: Target.SResult, expression: Is.EqualTo(600));
+        }
+
+        [Test]
+        public void StaticReplace_4Args()
+        {
+            using Hook hook = DetourHelper.StaticReplace(
+                original: (a, b, c, d) => Target.Sv4(a, b, c, d),
+                replacement: (int a, int b, int c, int d) => { Target.SResult = (a + b + c + d) * 100; });
+            Target.Sv4(a: 1, b: 2, c: 3, d: 4);
+            Assert.That(actual: Target.SResult, expression: Is.EqualTo(1000));
+        }
+
+        [Test]
+        public void StaticReplace_5Args()
+        {
+            using Hook hook = DetourHelper.StaticReplace(
+                original: (a, b, c, d, e) => Target.Sv5(a, b, c, d, e),
+                replacement: (int a, int b, int c, int d, int e) => { Target.SResult = (a + b + c + d + e) * 100; });
+            Target.Sv5(a: 1, b: 2, c: 3, d: 4, e: 5);
+            Assert.That(actual: Target.SResult, expression: Is.EqualTo(1500));
+        }
+
+        [Test]
+        public void StaticReplace_6Args()
+        {
+            using Hook hook = DetourHelper.StaticReplace(
+                original: (a, b, c, d, e, f) => Target.Sv6(a, b, c, d, e, f),
+                replacement: (int a, int b, int c, int d, int e, int f) =>
+                {
+                    Target.SResult = (a + b + c + d + e + f) * 100;
+                });
+            Target.Sv6(a: 1, b: 2, c: 3, d: 4, e: 5, f: 6);
+            Assert.That(actual: Target.SResult, expression: Is.EqualTo(2100));
+        }
+
+        [Test]
+        public void StaticReplace_7Args()
+        {
+            using Hook hook = DetourHelper.StaticReplace(
+                original: (a, b, c, d, e, f, g) => Target.Sv7(a, b, c, d, e, f, g),
+                replacement: (int a, int b, int c, int d, int e, int f, int g) =>
+                {
+                    Target.SResult = (a + b + c + d + e + f + g) * 100;
+                });
+            Target.Sv7(a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7);
+            Assert.That(actual: Target.SResult, expression: Is.EqualTo(2800));
+        }
+
+        #endregion
+
+        #region Static replace with return
+
+        [Test]
+        public void StaticReplaceWithReturn_0Args()
+        {
+            using Hook hook = DetourHelper.StaticReplace(original: () => Target.Sr0(), replacement: () => 999);
+            Assert.That(actual: Target.Sr0(), expression: Is.EqualTo(999));
+        }
+
+        [Test]
+        public void StaticReplaceWithReturn_1Arg()
+        {
+            using Hook hook = DetourHelper.StaticReplace(original: a => Target.Sr1(a), replacement: (int a) => a * 100);
+            Assert.That(actual: Target.Sr1(5), expression: Is.EqualTo(500));
+        }
+
+        [Test]
+        public void StaticReplaceWithReturn_2Args()
+        {
+            using Hook hook = DetourHelper.StaticReplace(
+                original: (a, b) => Target.Sr2(a, b),
+                replacement: (int a, int b) => (a + b) * 100);
+            Assert.That(actual: Target.Sr2(a: 1, b: 2), expression: Is.EqualTo(300));
+        }
+
+        [Test]
+        public void StaticReplaceWithReturn_3Args()
+        {
+            using Hook hook = DetourHelper.StaticReplace(
+                original: (a, b, c) => Target.Sr3(a, b, c),
+                replacement: (int a, int b, int c) => (a + b + c) * 100);
+            Assert.That(actual: Target.Sr3(a: 1, b: 2, c: 3), expression: Is.EqualTo(600));
+        }
+
+        [Test]
+        public void StaticReplaceWithReturn_4Args()
+        {
+            using Hook hook = DetourHelper.StaticReplace(
+                original: (a, b, c, d) => Target.Sr4(a, b, c, d),
+                replacement: (int a, int b, int c, int d) => (a + b + c + d) * 100);
+            Assert.That(actual: Target.Sr4(a: 1, b: 2, c: 3, d: 4), expression: Is.EqualTo(1000));
+        }
+
+        [Test]
+        public void StaticReplaceWithReturn_5Args()
+        {
+            using Hook hook = DetourHelper.StaticReplace(
+                original: (a, b, c, d, e) => Target.Sr5(a, b, c, d, e),
+                replacement: (int a, int b, int c, int d, int e) => (a + b + c + d + e) * 100);
+            Assert.That(actual: Target.Sr5(a: 1, b: 2, c: 3, d: 4, e: 5), expression: Is.EqualTo(1500));
+        }
+
+        [Test]
+        public void StaticReplaceWithReturn_6Args()
+        {
+            using Hook hook = DetourHelper.StaticReplace(
+                original: (a, b, c, d, e, f) => Target.Sr6(a, b, c, d, e, f),
+                replacement: (int a, int b, int c, int d, int e, int f) => (a + b + c + d + e + f) * 100);
+            Assert.That(actual: Target.Sr6(a: 1, b: 2, c: 3, d: 4, e: 5, f: 6), expression: Is.EqualTo(2100));
+        }
+
+        [Test]
+        public void StaticReplaceWithReturn_7Args()
+        {
+            using Hook hook = DetourHelper.StaticReplace(
+                original: (a, b, c, d, e, f, g) => Target.Sr7(a, b, c, d, e, f, g),
+                replacement: (int a, int b, int c, int d, int e, int f, int g) => (a + b + c + d + e + f + g) * 100);
+            Assert.That(actual: Target.Sr7(a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7), expression: Is.EqualTo(2800));
         }
 
         #endregion

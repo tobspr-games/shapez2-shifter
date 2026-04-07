@@ -23,9 +23,10 @@ namespace ShapezShifter.Hijack
                     original: (save, reader, movEnv) => save.Serialize(reader, movEnv),
                     postfix: OnSerializeSavePostfix);
 
-            DeserializePlayerHook = DetourHelper.CreateStaticPostfixHook<Savegame, SavegameBlobReader>(
-                original: reader => Savegame.Deserialize(reader),
-                postfix: OnDeserializeSavePostfix);
+            DeserializePlayerHook =
+                DetourHelper.CreateStaticPostfixHook<SavegameBlobReader, SerializedSavegameMetadata>(
+                    original: reader => Savegame.Deserialize(reader),
+                    postfix: OnDeserializeSavePostfix);
         }
 
         private void OnSerializeSavePostfix(
@@ -48,7 +49,9 @@ namespace ShapezShifter.Hijack
             }
         }
 
-        private void OnDeserializeSavePostfix(SavegameBlobReader reader)
+        private SerializedSavegameMetadata OnDeserializeSavePostfix(
+            SavegameBlobReader reader,
+            SerializedSavegameMetadata result)
         {
             Logger.Info?.Log("Intercepting savegame deserialization for mod data");
 
@@ -66,6 +69,8 @@ namespace ShapezShifter.Hijack
                     Logger.Error?.Log($"Error in mod load data rewirer: {ex}");
                 }
             }
+
+            return result;
         }
 
         public void Dispose()

@@ -19,8 +19,7 @@ namespace ShapezShifter.Hijack
             Logger = logger;
             BuildingsFactoryFromMetadataHook =
                 DetourHelper
-                   .CreateStaticPostfixHook<GameModeBuildingsFactory, MetaGameModeBuildings, IMeshCache,
-                        VisualThemeBaseResources, GameBuildings>(
+                   .CreateStaticPostfixHook<MetaGameModeBuildings, IMeshCache, VisualThemeBaseResources, GameBuildings>(
                         original: (meta, meshCache, resources) =>
                             GameModeBuildingsFactory.FromMetadata(meta, meshCache, resources),
                         postfix: Postfix);

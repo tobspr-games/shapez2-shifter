@@ -17,7 +17,6 @@ namespace ShapezShifter.Hijack
             RewirerProvider = rewirerProvider;
 
             Hook = DetourHelper.CreateStaticPostfixHook<GameMode, IEnumerable<object>>(
-                type: typeof(GameModeBuffQueries),
                 original: mode => GameModeBuffQueries.AllBuffables(mode),
                 postfix: Postfix);
         }

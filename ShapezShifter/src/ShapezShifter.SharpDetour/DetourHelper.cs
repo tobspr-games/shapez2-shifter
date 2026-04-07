@@ -18,7 +18,7 @@ namespace ShapezShifter.SharpDetour
     [PublicAPI]
     public static class DetourHelper
     {
-        #region Prefix with no return
+        #region Instance prefix with no return
 
         public static Hook CreatePrefixHook<TObject>(Expression<Action<TObject>> original, Action<TObject> prefix)
         {
@@ -187,7 +187,7 @@ namespace ShapezShifter.SharpDetour
 
         #endregion
 
-        #region Prefix with return
+        #region Instance prefix with return
 
         public static Hook CreatePrefixHook<TObject, TReturn>(
             Expression<Func<TObject, TReturn>> original,
@@ -366,7 +366,307 @@ namespace ShapezShifter.SharpDetour
 
         #endregion
 
-        #region Postfix with no return
+        #region Static prefix with no return
+
+        public static Hook CreateStaticPrefixHook<TObject>(Expression<Action<TObject>> original, Action prefix)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
+            return new Hook(actualMethodBody, target: (Action<Action>)Patch);
+
+            void Patch(Action orig)
+            {
+                prefix();
+                orig();
+            }
+        }
+
+        public static Hook CreateStaticPrefixHook<TObject, TArg0>(
+            Expression<Action<TArg0>> original,
+            Func<TArg0, TArg0> prefix)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
+            return new Hook(actualMethodBody, target: (Action<Action<TArg0>, TArg0>)Patch);
+
+            void Patch(Action<TArg0> orig, TArg0 arg0)
+            {
+                arg0 = prefix(arg0);
+                orig(arg0);
+            }
+        }
+
+        public static Hook CreateStaticPrefixHook<TObject, TArg0, TArg1>(
+            Expression<Action<TArg0, TArg1>> original,
+            Func<TArg0, TArg1, (TArg0, TArg1)> prefix)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
+            return new Hook(actualMethodBody, target: (Action<Action<TArg0, TArg1>, TArg0, TArg1>)Patch);
+
+            void Patch(Action<TArg0, TArg1> orig, TArg0 arg0, TArg1 arg1)
+            {
+                (arg0, arg1) = prefix(arg0, arg1);
+                orig(arg0, arg1);
+            }
+        }
+
+        public static Hook CreateStaticPrefixHook<TObject, TArg0, TArg1, TArg2>(
+            Expression<Action<TObject, TArg0, TArg1, TArg2>> original,
+            Func<TArg0, TArg1, TArg2, (TArg0, TArg1, TArg2)> prefix)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
+            return new Hook(actualMethodBody, target: (Action<Action<TArg0, TArg1, TArg2>, TArg0, TArg1, TArg2>)Patch);
+
+            void Patch(Action<TArg0, TArg1, TArg2> orig, TArg0 arg0, TArg1 arg1, TArg2 arg2)
+            {
+                (arg0, arg1, arg2) = prefix(arg0, arg1, arg2);
+                orig(arg0, arg1, arg2);
+            }
+        }
+
+        public static Hook CreateStaticPrefixHook<TObject, TArg0, TArg1, TArg2, TArg3>(
+            Expression<Action<TArg0, TArg1, TArg2, TArg3>> original,
+            Func<TArg0, TArg1, TArg2, TArg3, (TArg0, TArg1, TArg2, TArg3)> prefix)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
+            return new Hook(
+                actualMethodBody,
+                target: (Action<Action<TArg0, TArg1, TArg2, TArg3>, TArg0, TArg1, TArg2, TArg3>)Patch);
+
+            void Patch(Action<TArg0, TArg1, TArg2, TArg3> orig, TArg0 arg0, TArg1 arg1, TArg2 arg2, TArg3 arg3)
+            {
+                (arg0, arg1, arg2, arg3) = prefix(arg0, arg1, arg2, arg3);
+                orig(arg0, arg1, arg2, arg3);
+            }
+        }
+
+        public static Hook CreateStaticPrefixHook<TObject, TArg0, TArg1, TArg2, TArg3, TArg4>(
+            Expression<Action<TArg0, TArg1, TArg2, TArg3, TArg4>> original,
+            Func<TArg0, TArg1, TArg2, TArg3, TArg4, (TArg0, TArg1, TArg2, TArg3, TArg4)> prefix)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
+            return new Hook(
+                actualMethodBody,
+                target: (Action<Action<TArg0, TArg1, TArg2, TArg3, TArg4>, TArg0, TArg1, TArg2, TArg3, TArg4>)Patch);
+
+            void Patch(
+                Action<TArg0, TArg1, TArg2, TArg3, TArg4> orig,
+                TArg0 arg0,
+                TArg1 arg1,
+                TArg2 arg2,
+                TArg3 arg3,
+                TArg4 arg4)
+            {
+                (arg0, arg1, arg2, arg3, arg4) = prefix(arg0, arg1, arg2, arg3, arg4);
+                orig(arg0, arg1, arg2, arg3, arg4);
+            }
+        }
+
+        public static Hook CreateStaticPrefixHook<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5>(
+            Expression<Action<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5>> original,
+            Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, (TArg0, TArg1, TArg2, TArg3, TArg4, TArg5)> prefix)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
+            return new Hook(
+                actualMethodBody,
+                target: (Action<Action<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5>, TArg0, TArg1, TArg2, TArg3, TArg4,
+                    TArg5>)Patch);
+
+            void Patch(
+                Action<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5> orig,
+                TArg0 arg0,
+                TArg1 arg1,
+                TArg2 arg2,
+                TArg3 arg3,
+                TArg4 arg4,
+                TArg5 arg5)
+            {
+                (arg0, arg1, arg2, arg3, arg4, arg5) = prefix(arg0, arg1, arg2, arg3, arg4, arg5);
+                orig(arg0, arg1, arg2, arg3, arg4, arg5);
+            }
+        }
+
+        public static Hook CreateStaticPrefixHook<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6>(
+            Expression<Action<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6>> original,
+            Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, (TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6)>
+                prefix)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
+            return new Hook(
+                actualMethodBody,
+                target: (Action<Action<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6>, TArg0, TArg1, TArg2, TArg3,
+                    TArg4, TArg5, TArg6>)Patch);
+
+            void Patch(
+                Action<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6> orig,
+                TArg0 arg0,
+                TArg1 arg1,
+                TArg2 arg2,
+                TArg3 arg3,
+                TArg4 arg4,
+                TArg5 arg5,
+                TArg6 arg6)
+            {
+                (arg0, arg1, arg2, arg3, arg4, arg5, arg6) = prefix(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+                orig(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+            }
+        }
+
+        #endregion
+
+        #region Static prefix with return
+
+        public static Hook CreateStaticPrefixHook<TResult>(Expression<Func<TResult>> original, Action prefix)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(actualMethodBody, target: (Func<Func<TResult>, TResult>)Patch);
+
+            TResult Patch(Func<TResult> orig)
+            {
+                prefix();
+                return orig();
+            }
+        }
+
+        public static Hook CreateStaticPrefixHook<TArg0, TResult>(
+            Expression<Func<TArg0, TResult>> original,
+            Func<TArg0, TArg0> prefix)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(actualMethodBody, target: (Func<Func<TArg0, TResult>, TArg0, TResult>)Patch);
+
+            TResult Patch(Func<TArg0, TResult> orig, TArg0 arg0)
+            {
+                arg0 = prefix(arg0);
+                return orig(arg0);
+            }
+        }
+
+        public static Hook CreateStaticPrefixHook<TArg0, TArg1, TResult>(
+            Expression<Func<TArg0, TArg1, TResult>> original,
+            Func<TArg0, TArg1, (TArg0, TArg1)> prefix)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(actualMethodBody, target: (Func<Func<TArg0, TArg1, TResult>, TArg0, TArg1, TResult>)Patch);
+
+            TResult Patch(Func<TArg0, TArg1, TResult> orig, TArg0 arg0, TArg1 arg1)
+            {
+                (arg0, arg1) = prefix(arg0, arg1);
+                return orig(arg0, arg1);
+            }
+        }
+
+        public static Hook CreateStaticPrefixHook<TArg0, TArg1, TArg2, TResult>(
+            Expression<Func<TArg0, TArg1, TArg2, TResult>> original,
+            Func<TArg0, TArg1, TArg2, (TArg0, TArg1, TArg2)> prefix)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(
+                actualMethodBody,
+                target: (Func<Func<TArg0, TArg1, TArg2, TResult>, TArg0, TArg1, TArg2, TResult>)Patch);
+
+            TResult Patch(Func<TArg0, TArg1, TArg2, TResult> orig, TArg0 arg0, TArg1 arg1, TArg2 arg2)
+            {
+                (arg0, arg1, arg2) = prefix(arg0, arg1, arg2);
+                return orig(arg0, arg1, arg2);
+            }
+        }
+
+        public static Hook CreateStaticPrefixHook<TArg0, TArg1, TArg2, TArg3, TResult>(
+            Expression<Func<TArg0, TArg1, TArg2, TArg3, TResult>> original,
+            Func<TArg0, TArg1, TArg2, TArg3, (TArg0, TArg1, TArg2, TArg3)> prefix)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(
+                actualMethodBody,
+                target: (Func<Func<TArg0, TArg1, TArg2, TArg3, TResult>, TArg0, TArg1, TArg2, TArg3, TResult>)Patch);
+
+            TResult Patch(
+                Func<TArg0, TArg1, TArg2, TArg3, TResult> orig,
+                TArg0 arg0,
+                TArg1 arg1,
+                TArg2 arg2,
+                TArg3 arg3)
+            {
+                (arg0, arg1, arg2, arg3) = prefix(arg0, arg1, arg2, arg3);
+                return orig(arg0, arg1, arg2, arg3);
+            }
+        }
+
+        public static Hook CreateStaticPrefixHook<TArg0, TArg1, TArg2, TArg3, TArg4, TResult>(
+            Expression<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TResult>> original,
+            Func<TArg0, TArg1, TArg2, TArg3, TArg4, (TArg0, TArg1, TArg2, TArg3, TArg4)> prefix)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(
+                actualMethodBody,
+                target: (Func<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TResult>, TArg0, TArg1, TArg2, TArg3, TArg4,
+                    TResult>)Patch);
+
+            TResult Patch(
+                Func<TArg0, TArg1, TArg2, TArg3, TArg4, TResult> orig,
+                TArg0 arg0,
+                TArg1 arg1,
+                TArg2 arg2,
+                TArg3 arg3,
+                TArg4 arg4)
+            {
+                (arg0, arg1, arg2, arg3, arg4) = prefix(arg0, arg1, arg2, arg3, arg4);
+                return orig(arg0, arg1, arg2, arg3, arg4);
+            }
+        }
+
+        public static Hook CreateStaticPrefixHook<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult>(
+            Expression<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult>> original,
+            Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, (TArg0, TArg1, TArg2, TArg3, TArg4, TArg5)> prefix)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(
+                actualMethodBody,
+                target: (Func<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult>, TArg0, TArg1, TArg2, TArg3, TArg4
+                    , TArg5, TResult>)Patch);
+
+            TResult Patch(
+                Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult> orig,
+                TArg0 arg0,
+                TArg1 arg1,
+                TArg2 arg2,
+                TArg3 arg3,
+                TArg4 arg4,
+                TArg5 arg5)
+            {
+                (arg0, arg1, arg2, arg3, arg4, arg5) = prefix(arg0, arg1, arg2, arg3, arg4, arg5);
+                return orig(arg0, arg1, arg2, arg3, arg4, arg5);
+            }
+        }
+
+        public static Hook CreateStaticPrefixHook<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>(
+            Expression<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>> original,
+            Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, (TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6)>
+                prefix)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(
+                actualMethodBody,
+                target: (Func<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>, TArg0, TArg1, TArg2, TArg3
+                    , TArg4, TArg5, TArg6, TResult>)Patch);
+
+            TResult Patch(
+                Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult> orig,
+                TArg0 arg0,
+                TArg1 arg1,
+                TArg2 arg2,
+                TArg3 arg3,
+                TArg4 arg4,
+                TArg5 arg5,
+                TArg6 arg6)
+            {
+                (arg0, arg1, arg2, arg3, arg4, arg5, arg6) = prefix(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+                return orig(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+            }
+        }
+
+        #endregion
+
+        #region Instance postfix with no return
 
         public static Hook CreatePostfixHook<TObject>(Expression<Action<TObject>> original, Action<TObject> postfix)
         {
@@ -526,7 +826,7 @@ namespace ShapezShifter.SharpDetour
 
         #endregion
 
-        #region Postfix with return
+        #region Instance postfix with return
 
         public static Hook CreatePostfixHook<TObject, TResult>(
             Expression<Func<TObject, TResult>> original,
@@ -696,7 +996,7 @@ namespace ShapezShifter.SharpDetour
 
         #endregion
 
-        #region Static Postfix with no return (non-static class)
+        #region Static Postfix with no return
 
         public static Hook CreateStaticPostfixHook<TObject>(Expression<Action<TObject>> original, Action postfix)
         {
@@ -710,11 +1010,9 @@ namespace ShapezShifter.SharpDetour
             }
         }
 
-        public static Hook CreateStaticPostfixHook<TObject, TArg0>(
-            Expression<Action<TArg0>> original,
-            Action<TArg0> postfix)
+        public static Hook CreateStaticPostfixHook<TArg0>(Expression<Action<TArg0>> original, Action<TArg0> postfix)
         {
-            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
             return new Hook(actualMethodBody, target: (Action<Action<TArg0>, TArg0>)Patch);
 
             void Patch(Action<TArg0> orig, TArg0 arg0)
@@ -724,11 +1022,11 @@ namespace ShapezShifter.SharpDetour
             }
         }
 
-        public static Hook CreateStaticPostfixHook<TObject, TArg0, TArg1>(
+        public static Hook CreateStaticPostfixHook<TArg0, TArg1>(
             Expression<Action<TArg0, TArg1>> original,
             Action<TArg0, TArg1> postfix)
         {
-            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
             return new Hook(actualMethodBody, target: (Action<Action<TArg0, TArg1>, TArg0, TArg1>)Patch);
 
             void Patch(Action<TArg0, TArg1> orig, TArg0 arg0, TArg1 arg1)
@@ -738,11 +1036,11 @@ namespace ShapezShifter.SharpDetour
             }
         }
 
-        public static Hook CreateStaticPostfixHook<TObject, TArg0, TArg1, TArg2>(
-            Expression<Action<TObject, TArg0, TArg1, TArg2>> original,
+        public static Hook CreateStaticPostfixHook<TArg0, TArg1, TArg2>(
+            Expression<Action<TArg0, TArg1, TArg2>> original,
             Action<TArg0, TArg1, TArg2> postfix)
         {
-            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
             return new Hook(actualMethodBody, target: (Action<Action<TArg0, TArg1, TArg2>, TArg0, TArg1, TArg2>)Patch);
 
             void Patch(Action<TArg0, TArg1, TArg2> orig, TArg0 arg0, TArg1 arg1, TArg2 arg2)
@@ -752,11 +1050,11 @@ namespace ShapezShifter.SharpDetour
             }
         }
 
-        public static Hook CreateStaticPostfixHook<TObject, TArg0, TArg1, TArg2, TArg3>(
+        public static Hook CreateStaticPostfixHook<TArg0, TArg1, TArg2, TArg3>(
             Expression<Action<TArg0, TArg1, TArg2, TArg3>> original,
             Action<TArg0, TArg1, TArg2, TArg3> postfix)
         {
-            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
             return new Hook(
                 actualMethodBody,
                 target: (Action<Action<TArg0, TArg1, TArg2, TArg3>, TArg0, TArg1, TArg2, TArg3>)Patch);
@@ -768,11 +1066,11 @@ namespace ShapezShifter.SharpDetour
             }
         }
 
-        public static Hook CreateStaticPostfixHook<TObject, TArg0, TArg1, TArg2, TArg3, TArg4>(
+        public static Hook CreateStaticPostfixHook<TArg0, TArg1, TArg2, TArg3, TArg4>(
             Expression<Action<TArg0, TArg1, TArg2, TArg3, TArg4>> original,
             Action<TArg0, TArg1, TArg2, TArg3, TArg4> postfix)
         {
-            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
             return new Hook(
                 actualMethodBody,
                 target: (Action<Action<TArg0, TArg1, TArg2, TArg3, TArg4>, TArg0, TArg1, TArg2, TArg3, TArg4>)Patch);
@@ -790,11 +1088,11 @@ namespace ShapezShifter.SharpDetour
             }
         }
 
-        public static Hook CreateStaticPostfixHook<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5>(
+        public static Hook CreateStaticPostfixHook<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5>(
             Expression<Action<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5>> original,
             Action<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5> postfix)
         {
-            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
             return new Hook(
                 actualMethodBody,
                 target: (Action<Action<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5>, TArg0, TArg1, TArg2, TArg3, TArg4,
@@ -814,11 +1112,11 @@ namespace ShapezShifter.SharpDetour
             }
         }
 
-        public static Hook CreateStaticPostfixHook<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6>(
+        public static Hook CreateStaticPostfixHook<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6>(
             Expression<Action<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6>> original,
             Action<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6> postfix)
         {
-            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
             return new Hook(
                 actualMethodBody,
                 target: (Action<Action<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6>, TArg0, TArg1, TArg2, TArg3,
@@ -841,169 +1139,13 @@ namespace ShapezShifter.SharpDetour
 
         #endregion
 
-        #region Static Postfix with return (non-static class)
-
-        public static Hook CreateStaticPostfixHook<TObject, TResult>(
-            Expression<Func<TResult>> original,
-            Func<TResult, TResult> postfix)
-        {
-            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
-            return new Hook(actualMethodBody, target: (Func<Func<TResult>, TResult>)Patch);
-
-            TResult Patch(Func<TResult> orig)
-            {
-                TResult value = orig();
-                return postfix(value);
-            }
-        }
-
-        public static Hook CreateStaticPostfixHook<TObject, TArg0, TResult>(
-            Expression<Func<TArg0, TResult>> original,
-            Func<TArg0, TResult, TResult> postfix)
-        {
-            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
-            return new Hook(actualMethodBody, target: (Func<Func<TArg0, TResult>, TArg0, TResult>)Patch);
-
-            TResult Patch(Func<TArg0, TResult> orig, TArg0 arg0)
-            {
-                TResult value = orig(arg0);
-                return postfix(arg0, value);
-            }
-        }
-
-        public static Hook CreateStaticPostfixHook<TObject, TArg0, TArg1, TResult>(
-            Expression<Func<TArg0, TArg1, TResult>> original,
-            Func<TArg0, TArg1, TResult, TResult> postfix)
-        {
-            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
-            return new Hook(actualMethodBody, target: (Func<Func<TArg0, TArg1, TResult>, TArg0, TArg1, TResult>)Patch);
-
-            TResult Patch(Func<TArg0, TArg1, TResult> orig, TArg0 arg0, TArg1 arg1)
-            {
-                TResult value = orig(arg0, arg1);
-                return postfix(arg0, arg1, value);
-            }
-        }
-
-        public static Hook CreateStaticPostfixHook<TObject, TArg0, TArg1, TArg2, TResult>(
-            Expression<Func<TArg0, TArg1, TArg2, TResult>> original,
-            Func<TArg0, TArg1, TArg2, TResult, TResult> postfix)
-        {
-            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
-            return new Hook(
-                actualMethodBody,
-                target: (Func<Func<TArg0, TArg1, TArg2, TResult>, TArg0, TArg1, TArg2, TResult>)Patch);
-
-            TResult Patch(Func<TArg0, TArg1, TArg2, TResult> orig, TArg0 arg0, TArg1 arg1, TArg2 arg2)
-            {
-                TResult value = orig(arg0, arg1, arg2);
-                return postfix(arg0, arg1, arg2, value);
-            }
-        }
-
-        public static Hook CreateStaticPostfixHook<TObject, TArg0, TArg1, TArg2, TArg3, TResult>(
-            Expression<Func<TArg0, TArg1, TArg2, TArg3, TResult>> original,
-            Func<TArg0, TArg1, TArg2, TArg3, TResult, TResult> postfix)
-        {
-            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
-            return new Hook(
-                actualMethodBody,
-                target: (Func<Func<TArg0, TArg1, TArg2, TArg3, TResult>, TArg0, TArg1, TArg2, TArg3, TResult>)Patch);
-
-            TResult Patch(
-                Func<TArg0, TArg1, TArg2, TArg3, TResult> orig,
-                TArg0 arg0,
-                TArg1 arg1,
-                TArg2 arg2,
-                TArg3 arg3)
-            {
-                TResult value = orig(arg0, arg1, arg2, arg3);
-                return postfix(arg0, arg1, arg2, arg3, value);
-            }
-        }
-
-        public static Hook CreateStaticPostfixHook<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TResult>(
-            Expression<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TResult>> original,
-            Func<TArg0, TArg1, TArg2, TArg3, TArg4, TResult, TResult> postfix)
-        {
-            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
-            return new Hook(
-                actualMethodBody,
-                target: (Func<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TResult>, TArg0, TArg1, TArg2, TArg3, TArg4,
-                    TResult>)Patch);
-
-            TResult Patch(
-                Func<TArg0, TArg1, TArg2, TArg3, TArg4, TResult> orig,
-                TArg0 arg0,
-                TArg1 arg1,
-                TArg2 arg2,
-                TArg3 arg3,
-                TArg4 arg4)
-            {
-                TResult value = orig(arg0, arg1, arg2, arg3, arg4);
-                return postfix(arg0, arg1, arg2, arg3, arg4, value);
-            }
-        }
-
-        public static Hook CreateStaticPostfixHook<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult>(
-            Expression<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult>> original,
-            Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult, TResult> postfix)
-        {
-            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
-            return new Hook(
-                actualMethodBody,
-                target: (Func<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult>, TArg0, TArg1, TArg2, TArg3, TArg4
-                    , TArg5, TResult>)Patch);
-
-            TResult Patch(
-                Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult> orig,
-                TArg0 arg0,
-                TArg1 arg1,
-                TArg2 arg2,
-                TArg3 arg3,
-                TArg4 arg4,
-                TArg5 arg5)
-            {
-                TResult value = orig(arg0, arg1, arg2, arg3, arg4, arg5);
-                return postfix(arg0, arg1, arg2, arg3, arg4, arg5, value);
-            }
-        }
-
-        public static Hook CreateStaticPostfixHook<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>(
-            Expression<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>> original,
-            Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult, TResult> postfix)
-        {
-            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
-            return new Hook(
-                actualMethodBody,
-                target: (Func<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>, TArg0, TArg1, TArg2, TArg3
-                    , TArg4, TArg5, TArg6, TResult>)Patch);
-
-            TResult Patch(
-                Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult> orig,
-                TArg0 arg0,
-                TArg1 arg1,
-                TArg2 arg2,
-                TArg3 arg3,
-                TArg4 arg4,
-                TArg5 arg5,
-                TArg6 arg6)
-            {
-                TResult value = orig(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
-                return postfix(arg0, arg1, arg2, arg3, arg4, arg5, arg6, value);
-            }
-        }
-
-        #endregion
-
         #region Static Postfix with return
 
         public static Hook CreateStaticPostfixHook<TResult>(
-            Type type,
             Expression<Func<TResult>> original,
             Func<TResult, TResult> postfix)
         {
-            MethodInfo actualMethodBody = GetRuntimeMethod(type, original);
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
             return new Hook(actualMethodBody, target: (Func<Func<TResult>, TResult>)Patch);
 
             TResult Patch(Func<TResult> orig)
@@ -1014,11 +1156,10 @@ namespace ShapezShifter.SharpDetour
         }
 
         public static Hook CreateStaticPostfixHook<TArg0, TResult>(
-            Type type,
             Expression<Func<TArg0, TResult>> original,
             Func<TArg0, TResult, TResult> postfix)
         {
-            MethodInfo actualMethodBody = GetRuntimeMethod(type, original);
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
             return new Hook(actualMethodBody, target: (Func<Func<TArg0, TResult>, TArg0, TResult>)Patch);
 
             TResult Patch(Func<TArg0, TResult> orig, TArg0 arg0)
@@ -1029,11 +1170,10 @@ namespace ShapezShifter.SharpDetour
         }
 
         public static Hook CreateStaticPostfixHook<TArg0, TArg1, TResult>(
-            Type type,
             Expression<Func<TArg0, TArg1, TResult>> original,
             Func<TArg0, TArg1, TResult, TResult> postfix)
         {
-            MethodInfo actualMethodBody = GetRuntimeMethod(type, original);
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
             return new Hook(actualMethodBody, target: (Func<Func<TArg0, TArg1, TResult>, TArg0, TArg1, TResult>)Patch);
 
             TResult Patch(Func<TArg0, TArg1, TResult> orig, TArg0 arg0, TArg1 arg1)
@@ -1044,11 +1184,10 @@ namespace ShapezShifter.SharpDetour
         }
 
         public static Hook CreateStaticPostfixHook<TArg0, TArg1, TArg2, TResult>(
-            Type type,
             Expression<Func<TArg0, TArg1, TArg2, TResult>> original,
             Func<TArg0, TArg1, TArg2, TResult, TResult> postfix)
         {
-            MethodInfo actualMethodBody = GetRuntimeMethod(type, original);
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
             return new Hook(
                 actualMethodBody,
                 target: (Func<Func<TArg0, TArg1, TArg2, TResult>, TArg0, TArg1, TArg2, TResult>)Patch);
@@ -1061,11 +1200,10 @@ namespace ShapezShifter.SharpDetour
         }
 
         public static Hook CreateStaticPostfixHook<TArg0, TArg1, TArg2, TArg3, TResult>(
-            Type type,
             Expression<Func<TArg0, TArg1, TArg2, TArg3, TResult>> original,
             Func<TArg0, TArg1, TArg2, TArg3, TResult, TResult> postfix)
         {
-            MethodInfo actualMethodBody = GetRuntimeMethod(type, original);
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
             return new Hook(
                 actualMethodBody,
                 target: (Func<Func<TArg0, TArg1, TArg2, TArg3, TResult>, TArg0, TArg1, TArg2, TArg3, TResult>)Patch);
@@ -1083,11 +1221,10 @@ namespace ShapezShifter.SharpDetour
         }
 
         public static Hook CreateStaticPostfixHook<TArg0, TArg1, TArg2, TArg3, TArg4, TResult>(
-            Type type,
             Expression<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TResult>> original,
             Func<TArg0, TArg1, TArg2, TArg3, TArg4, TResult, TResult> postfix)
         {
-            MethodInfo actualMethodBody = GetRuntimeMethod(type, original);
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
             return new Hook(
                 actualMethodBody,
                 target: (Func<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TResult>, TArg0, TArg1, TArg2, TArg3, TArg4,
@@ -1107,11 +1244,10 @@ namespace ShapezShifter.SharpDetour
         }
 
         public static Hook CreateStaticPostfixHook<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult>(
-            Type type,
             Expression<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult>> original,
             Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult, TResult> postfix)
         {
-            MethodInfo actualMethodBody = GetRuntimeMethod(type, original);
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
             return new Hook(
                 actualMethodBody,
                 target: (Func<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult>, TArg0, TArg1, TArg2, TArg3, TArg4
@@ -1132,11 +1268,10 @@ namespace ShapezShifter.SharpDetour
         }
 
         public static Hook CreateStaticPostfixHook<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>(
-            Type type,
             Expression<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>> original,
             Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult, TResult> postfix)
         {
-            MethodInfo actualMethodBody = GetRuntimeMethod(type, original);
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
             return new Hook(
                 actualMethodBody,
                 target: (Func<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>, TArg0, TArg1, TArg2, TArg3
@@ -1154,112 +1289,6 @@ namespace ShapezShifter.SharpDetour
             {
                 TResult value = orig(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
                 return postfix(arg0, arg1, arg2, arg3, arg4, arg5, arg6, value);
-            }
-        }
-
-        #endregion
-
-        #region Static Postfix with return (static class)
-
-        public static Hook CreatePostfixHook<TObject, TArg0, TArg1, TArg2, TArg3, TResult>(
-            Type type,
-            Expression<Func<TObject, TArg0, TArg1, TArg2, TArg3, TResult>> original,
-            Func<TObject, TArg0, TArg1, TArg2, TArg3, TResult, TResult> postfix)
-        {
-            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
-            return new Hook(
-                actualMethodBody,
-                target: (Func<Func<TObject, TArg0, TArg1, TArg2, TArg3, TResult>, TObject, TArg0, TArg1, TArg2, TArg3,
-                    TResult>)Patch);
-
-            TResult Patch(
-                Func<TObject, TArg0, TArg1, TArg2, TArg3, TResult> orig,
-                TObject self,
-                TArg0 arg0,
-                TArg1 arg1,
-                TArg2 arg2,
-                TArg3 arg3)
-            {
-                TResult value = orig(self, arg0, arg1, arg2, arg3);
-                return postfix(self, arg0, arg1, arg2, arg3, value);
-            }
-        }
-
-        public static Hook CreatePostfixHook<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TResult>(
-            Type type,
-            Expression<Func<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TResult>> original,
-            Func<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TResult, TResult> postfix)
-        {
-            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
-            return new Hook(
-                actualMethodBody,
-                target: (Func<Func<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TResult>, TObject, TArg0, TArg1, TArg2,
-                    TArg3, TArg4, TResult>)Patch);
-
-            TResult Patch(
-                Func<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TResult> orig,
-                TObject self,
-                TArg0 arg0,
-                TArg1 arg1,
-                TArg2 arg2,
-                TArg3 arg3,
-                TArg4 arg4)
-            {
-                TResult value = orig(self, arg0, arg1, arg2, arg3, arg4);
-                return postfix(self, arg0, arg1, arg2, arg3, arg4, value);
-            }
-        }
-
-        public static Hook CreatePostfixHook<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult>(
-            Type type,
-            Expression<Func<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult>> original,
-            Func<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult, TResult> postfix)
-        {
-            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
-            return new Hook(
-                actualMethodBody,
-                target: (Func<Func<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult>, TObject, TArg0, TArg1,
-                    TArg2, TArg3, TArg4, TArg5, TResult>)Patch);
-
-            TResult Patch(
-                Func<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult> orig,
-                TObject self,
-                TArg0 arg0,
-                TArg1 arg1,
-                TArg2 arg2,
-                TArg3 arg3,
-                TArg4 arg4,
-                TArg5 arg5)
-            {
-                TResult value = orig(self, arg0, arg1, arg2, arg3, arg4, arg5);
-                return postfix(self, arg0, arg1, arg2, arg3, arg4, arg5, value);
-            }
-        }
-
-        public static Hook CreatePostfixHook<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>(
-            Type type,
-            Expression<Func<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>> original,
-            Func<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult, TResult> postfix)
-        {
-            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
-            return new Hook(
-                actualMethodBody,
-                target: (Func<Func<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>, TObject, TArg0,
-                    TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>)Patch);
-
-            TResult Patch(
-                Func<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult> orig,
-                TObject self,
-                TArg0 arg0,
-                TArg1 arg1,
-                TArg2 arg2,
-                TArg3 arg3,
-                TArg4 arg4,
-                TArg5 arg5,
-                TArg6 arg6)
-            {
-                TResult value = orig(self, arg0, arg1, arg2, arg3, arg4, arg5, arg6);
-                return postfix(self, arg0, arg1, arg2, arg3, arg4, arg5, arg6, value);
             }
         }
 
@@ -1388,6 +1417,114 @@ namespace ShapezShifter.SharpDetour
 
         #endregion
 
+        #region Static skip with no return
+
+        public static Hook StaticSkip(Expression<Action> original)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(actualMethodBody, target: (Action<Action>)Patch);
+
+            static void Patch(Action orig) { }
+        }
+
+        public static Hook StaticSkip<TArg0>(Expression<Action<TArg0>> original)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(actualMethodBody, target: (Action<Action<TArg0>, TArg0>)Patch);
+
+            static void Patch(Action<TArg0> orig, TArg0 arg0) { }
+        }
+
+        public static Hook StaticSkip<TArg0, TArg1>(Expression<Action<TArg0, TArg1>> original)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(actualMethodBody, target: (Action<Action<TArg0, TArg1>, TArg0, TArg1>)Patch);
+
+            static void Patch(Action<TArg0, TArg1> orig, TArg0 arg0, TArg1 arg1) { }
+        }
+
+        public static Hook StaticSkip<TArg0, TArg1, TArg2>(Expression<Action<TArg0, TArg1, TArg2>> original)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(actualMethodBody, target: (Action<Action<TArg0, TArg1, TArg2>, TArg0, TArg1, TArg2>)Patch);
+
+            static void Patch(Action<TArg0, TArg1, TArg2> orig, TArg0 arg0, TArg1 arg1, TArg2 arg2) { }
+        }
+
+        public static Hook StaticSkip<TArg0, TArg1, TArg2, TArg3>(
+            Expression<Action<TArg0, TArg1, TArg2, TArg3>> original)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(
+                actualMethodBody,
+                target: (Action<Action<TArg0, TArg1, TArg2, TArg3>, TArg0, TArg1, TArg2, TArg3>)Patch);
+
+            static void Patch(
+                Action<TArg0, TArg1, TArg2, TArg3> orig,
+                TArg0 arg0,
+                TArg1 arg1,
+                TArg2 arg2,
+                TArg3 arg3) { }
+        }
+
+        public static Hook StaticSkip<TArg0, TArg1, TArg2, TArg3, TArg4>(
+            Expression<Action<TArg0, TArg1, TArg2, TArg3, TArg4>> original)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(
+                actualMethodBody,
+                target: (Action<Action<TArg0, TArg1, TArg2, TArg3, TArg4>, TArg0, TArg1, TArg2, TArg3, TArg4>)Patch);
+
+            static void Patch(
+                Action<TArg0, TArg1, TArg2, TArg3, TArg4> orig,
+                TArg0 arg0,
+                TArg1 arg1,
+                TArg2 arg2,
+                TArg3 arg3,
+                TArg4 arg4) { }
+        }
+
+        public static Hook StaticSkip<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5>(
+            Expression<Action<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5>> original)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(
+                actualMethodBody,
+                target: (Action<Action<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5>, TArg0, TArg1, TArg2, TArg3, TArg4,
+                    TArg5>)Patch);
+
+            static void Patch(
+                Action<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5> orig,
+                TArg0 arg0,
+                TArg1 arg1,
+                TArg2 arg2,
+                TArg3 arg3,
+                TArg4 arg4,
+                TArg5 arg5) { }
+        }
+
+        public static Hook StaticSkip<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6>(
+            Expression<Action<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6>> original)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(
+                actualMethodBody,
+                target: (Action<Action<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6>, TArg0, TArg1, TArg2, TArg3,
+                    TArg4, TArg5, TArg6>)Patch);
+
+            static void Patch(
+                Action<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6> orig,
+                TArg0 arg0,
+                TArg1 arg1,
+                TArg2 arg2,
+                TArg3 arg3,
+                TArg4 arg4,
+                TArg5 arg5,
+                TArg6 arg6) { }
+        }
+
+        #endregion
+
         #region Replace with no return
 
         public static Hook Replace<TObject>(Expression<Action<TObject>> original, Action<TObject> replacement)
@@ -1454,78 +1591,291 @@ namespace ShapezShifter.SharpDetour
 
         #endregion
 
+        #region Replace with return
+
+        public static Hook Replace<TObject, TResult>(
+            Expression<Func<TObject, TResult>> original,
+            Func<TObject, TResult> replacement)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
+            return new Hook(actualMethodBody, replacement);
+        }
+
+        public static Hook Replace<TObject, TArg0, TResult>(
+            Expression<Func<TObject, TArg0, TResult>> original,
+            Func<TObject, TArg0, TResult> replacement)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
+            return new Hook(actualMethodBody, replacement);
+        }
+
+        public static Hook Replace<TObject, TArg0, TArg1, TResult>(
+            Expression<Func<TObject, TArg0, TArg1, TResult>> original,
+            Func<TObject, TArg0, TArg1, TResult> replacement)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
+            return new Hook(actualMethodBody, replacement);
+        }
+
+        public static Hook Replace<TObject, TArg0, TArg1, TArg2, TResult>(
+            Expression<Func<TObject, TArg0, TArg1, TArg2, TResult>> original,
+            Func<TObject, TArg0, TArg1, TArg2, TResult> replacement)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
+            return new Hook(actualMethodBody, replacement);
+        }
+
+        public static Hook Replace<TObject, TArg0, TArg1, TArg2, TArg3, TResult>(
+            Expression<Func<TObject, TArg0, TArg1, TArg2, TArg3, TResult>> original,
+            Func<TObject, TArg0, TArg1, TArg2, TArg3, TResult> replacement)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
+            return new Hook(actualMethodBody, replacement);
+        }
+
+        public static Hook Replace<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TResult>(
+            Expression<Func<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TResult>> original,
+            Func<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TResult> replacement)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
+            return new Hook(actualMethodBody, replacement);
+        }
+
+        public static Hook Replace<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult>(
+            Expression<Func<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult>> original,
+            Func<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult> replacement)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
+            return new Hook(actualMethodBody, replacement);
+        }
+
+        public static Hook Replace<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>(
+            Expression<Func<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>> original,
+            Func<TObject, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult> replacement)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
+            return new Hook(actualMethodBody, replacement);
+        }
+
+        #endregion
+
+        #region Static replace with no return
+
+        public static Hook StaticReplace<TObject>(Expression<Action<TObject>> original, Action replacement)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
+            return new Hook(actualMethodBody, replacement);
+        }
+
+        public static Hook StaticReplace<TArg0>(Expression<Action<TArg0>> original, Action<TArg0> replacement)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(actualMethodBody, replacement);
+        }
+
+        public static Hook StaticReplace<TArg0, TArg1>(
+            Expression<Action<TArg0, TArg1>> original,
+            Action<TArg0, TArg1> replacement)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(actualMethodBody, replacement);
+        }
+
+        public static Hook StaticReplace<TArg0, TArg1, TArg2>(
+            Expression<Action<TArg0, TArg1, TArg2>> original,
+            Action<TArg0, TArg1, TArg2> replacement)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(actualMethodBody, replacement);
+        }
+
+        public static Hook StaticReplace<TArg0, TArg1, TArg2, TArg3>(
+            Expression<Action<TArg0, TArg1, TArg2, TArg3>> original,
+            Action<TArg0, TArg1, TArg2, TArg3> replacement)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(actualMethodBody, replacement);
+        }
+
+        public static Hook StaticReplace<TArg0, TArg1, TArg2, TArg3, TArg4>(
+            Expression<Action<TArg0, TArg1, TArg2, TArg3, TArg4>> original,
+            Action<TArg0, TArg1, TArg2, TArg3, TArg4> replacement)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(actualMethodBody, replacement);
+        }
+
+        public static Hook StaticReplace<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5>(
+            Expression<Action<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5>> original,
+            Action<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5> replacement)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(actualMethodBody, replacement);
+        }
+
+        public static Hook StaticReplace<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6>(
+            Expression<Action<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6>> original,
+            Action<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6> replacement)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(actualMethodBody, replacement);
+        }
+
+        #endregion
+
+        #region Static replace with return
+
+        public static Hook StaticReplace<TResult>(Expression<Func<TResult>> original, Func<TResult> replacement)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(actualMethodBody, replacement);
+        }
+
+        public static Hook StaticReplace<TArg0, TResult>(
+            Expression<Func<TArg0, TResult>> original,
+            Func<TArg0, TResult> replacement)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(actualMethodBody, replacement);
+        }
+
+        public static Hook StaticReplace<TArg0, TArg1, TResult>(
+            Expression<Func<TArg0, TArg1, TResult>> original,
+            Func<TArg0, TArg1, TResult> replacement)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(actualMethodBody, replacement);
+        }
+
+        public static Hook StaticReplace<TArg0, TArg1, TArg2, TResult>(
+            Expression<Func<TArg0, TArg1, TArg2, TResult>> original,
+            Func<TArg0, TArg1, TArg2, TResult> replacement)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(actualMethodBody, replacement);
+        }
+
+        public static Hook StaticReplace<TArg0, TArg1, TArg2, TArg3, TResult>(
+            Expression<Func<TArg0, TArg1, TArg2, TArg3, TResult>> original,
+            Func<TArg0, TArg1, TArg2, TArg3, TResult> replacement)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(actualMethodBody, replacement);
+        }
+
+        public static Hook StaticReplace<TArg0, TArg1, TArg2, TArg3, TArg4, TResult>(
+            Expression<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TResult>> original,
+            Func<TArg0, TArg1, TArg2, TArg3, TArg4, TResult> replacement)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(actualMethodBody, replacement);
+        }
+
+        public static Hook StaticReplace<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult>(
+            Expression<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult>> original,
+            Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult> replacement)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(actualMethodBody, replacement);
+        }
+
+        public static Hook StaticReplace<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>(
+            Expression<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>> original,
+            Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult> replacement)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod(original);
+            return new Hook(actualMethodBody, replacement);
+        }
+
+        #endregion
+
         internal static MethodInfo GetRuntimeMethod<TObject>(LambdaExpression original)
         {
-            string name = ((MethodCallExpression)original.Body).Method.Name;
+            return GetRuntimeMethod(type: typeof(TObject), original);
+        }
 
+        private static MethodInfo GetRuntimeMethod(LambdaExpression original)
+        {
+            Type type = ((MethodCallExpression)original.Body).Method.DeclaringType;
+
+            return GetRuntimeMethod(type, original);
+        }
+
+        private static MethodInfo GetRuntimeMethod(Type type, LambdaExpression original)
+        {
+            MethodInfo method = ((MethodCallExpression)original.Body).Method;
+            string methodName = method.Name;
             try
             {
-                MethodInfo actualMethodBody = typeof(TObject).GetMethod(
-                    name,
+                MethodInfo actualMethodBody = type.GetMethod(
+                    methodName,
                     bindingAttr: BindingFlags.Public
                                  | BindingFlags.NonPublic
                                  | BindingFlags.Instance
                                  | BindingFlags.Static);
                 if (actualMethodBody == null)
                 {
-                    throw new Exception($"Could not find method {name} in type {typeof(TObject)} during runtime");
+                    throw new Exception($"Could not find method {methodName} in type {type} during runtime");
                 }
                 return actualMethodBody;
             }
             catch (AmbiguousMatchException)
             {
-                var methods = typeof(TObject).GetMethods(
-                                                  bindingAttr: BindingFlags.Public
-                                                               | BindingFlags.NonPublic
-                                                               | BindingFlags.Instance
-                                                               | BindingFlags.Static)
-                                             .Where(x => x.Name == name);
-                foreach (MethodInfo method in methods)
+                var methods = type.GetMethods(
+                                       bindingAttr: BindingFlags.Public
+                                                    | BindingFlags.NonPublic
+                                                    | BindingFlags.Instance
+                                                    | BindingFlags.Static)
+                                  .Where(x => x.Name == methodName);
+
+                MethodInfo a = ((MethodCallExpression)original.Body).Method;
+
+                foreach (MethodInfo potentialMethod in methods)
                 {
-                    if (ReflectedMethodArgumentsMatchExpression(original, method))
+                    if (ReflectedMethodArgumentsMatchExpression(method, potentialMethod))
                     {
-                        return method;
+                        return potentialMethod;
                     }
                 }
-                throw new Exception($"Could not find method {name} in type {typeof(TObject)} during runtime");
+                throw new Exception($"Could not find method {methodName} in type {type} during runtime");
             }
         }
 
-        private static bool ReflectedMethodArgumentsMatchExpression(LambdaExpression expression, MethodInfo method)
+        private static bool ReflectedMethodArgumentsMatchExpression(MethodInfo a, MethodInfo b)
         {
-            var reflectedParams = method.GetParameters();
-            if (reflectedParams.Length != expression.Parameters.Count)
+            Debugging.Logger.Info?.Log($"Comparing {a} to {b}");
+            var aParams = a.GetParameters();
+            var bParams = b.GetParameters();
+
+            for (int i = 0; i < aParams.Length; i++)
+            {
+                ParameterInfo methodInfoParam = aParams[i];
+                Debugging.Logger.Info?.Log($"Reflected param #{i}: {methodInfoParam.ParameterType}");
+            }
+            for (int i = 0; i < bParams.Length; i++)
+            {
+                ParameterInfo methodInfoParam = bParams[i];
+                Debugging.Logger.Info?.Log($"Reflected param #{i}: {methodInfoParam.ParameterType}");
+            }
+            Debugging.Logger.Info?.Log($"{aParams.Length} vs {bParams.Length}");
+            if (aParams.Length != bParams.Length)
             {
                 return false;
             }
-            for (int i = 0; i < expression.Parameters.Count; i++)
+
+            for (int i = 0; i < aParams.Length; i++)
             {
-                ParameterExpression expressionParam = expression.Parameters[i];
-                ParameterInfo methodInfoParam = reflectedParams[i];
-                if (expressionParam.Type == methodInfoParam.ParameterType)
+                ParameterInfo expressionParam = aParams[i];
+                ParameterInfo methodInfoParam = bParams[i];
+                Debugging.Logger.Info?.Log(
+                    $"Comparing {expressionParam.ParameterType} to {methodInfoParam.ParameterType}");
+                if (expressionParam.ParameterType != methodInfoParam.ParameterType)
                 {
-                    return true;
+                    return false;
                 }
             }
 
-            return false;
-        }
-
-        private static MethodInfo GetRuntimeMethod(Type type, LambdaExpression original)
-        {
-            string name = ((MethodCallExpression)original.Body).Method.Name;
-            MethodInfo actualMethodBody = type.GetMethod(
-                name,
-                bindingAttr: BindingFlags.Public
-                             | BindingFlags.NonPublic
-                             | BindingFlags.Instance
-                             | BindingFlags.Static);
-            if (actualMethodBody == null)
-            {
-                throw new Exception($"Could not find method {name} in type {type} during runtime");
-            }
-
-            return actualMethodBody;
+            return true;
         }
     }
 }
