@@ -138,11 +138,11 @@ namespace ShapezShifter.Flow.Atomic
             // Some of these extenders depend on data created on a previous step, but more importantly, they require
             // that the previous extension was applied to the game. Thus, this method create an extension logic tree
             // where the extenders are activated in the order they should. When all extenders are applied, the process
-            // starts again (this happens, for example, when loading another savegame) 
+            // starts again (this happens, for example, when loading another savegame)
             void BuildExtenders()
             {
                 // Start the chain of extenders with the scenario extender. This also serves as a filter for only
-                // applying the other extenders if the scenario is part of the filter 
+                // applying the other extenders if the scenario is part of the filter
                 RewirerChainLink scenarioRewirer = RewirerChain.BeginRewiringWith(
                     new GameScenarioBuildingExtender(
                         scenarioFilter: ScenarioFilter,
@@ -155,7 +155,7 @@ namespace ShapezShifter.Flow.Atomic
                 // With the building added, create the simulation
                 RewirerChainLink simulationsRewirer = LazySimulationExtender.ContinueAfter(buildingRewirer);
 
-                RewirerChainLink predictionRewirer = LazyPredictionExtender.ContinueAfter(buildingRewirer);
+                RewirerChainLink predictionRewirer = LazyPredictionExtender?.ContinueAfter(buildingRewirer);
 
                 // With the building, create the placement
                 var placementRewirer = buildingRewirer.ThenContinueRewiringWith(BuildDefaultPlacementExtender);
@@ -171,8 +171,12 @@ namespace ShapezShifter.Flow.Atomic
                 // restarted
                 IWaitAllRewirers allRewirers = AggregatedChain.WaitFor(simulationsRewirer)
                                                               .And(toolbarRewirer)
-                                                              .And(modulesRewirer)
-                                                              .And(predictionRewirer);
+                                                              .And(modulesRewirer);
+                if (predictionRewirer != null)
+                {
+                    allRewirers = allRewirers.And(predictionRewirer);
+                }
+
                 allRewirers.AfterHijack.Register(OnApplyAllExtenders);
                 return;
 
