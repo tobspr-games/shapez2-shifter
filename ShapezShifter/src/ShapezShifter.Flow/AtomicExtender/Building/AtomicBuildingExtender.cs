@@ -174,7 +174,7 @@ namespace ShapezShifter.Flow.Atomic
                                                               .And(modulesRewirer);
                 if (predictionRewirer != null)
                 {
-                    allRewirers.And(predictionRewirer);
+                    allRewirers = allRewirers.And(predictionRewirer);
                 }
 
                 allRewirers.AfterHijack.Register(OnApplyAllExtenders);
