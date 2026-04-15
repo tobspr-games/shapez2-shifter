@@ -52,6 +52,8 @@ namespace ShapezShifter.Flow
             public ModConsoleCommandWrapper(IMod mod, IDebugConsole console)
             {
                 Console = console;
+                // Use the mod assembly name as a prefix for all commands to avoid conflicts between mods.
+                // Must be lowercase because the console only matches lowercase commands.
                 ModPrefix = mod.GetType().Assembly.GetName().Name.ToLowerInvariant();
             }
 
@@ -67,6 +69,7 @@ namespace ShapezShifter.Flow
 
             public void Register(string id, Action<DebugConsole.CommandContext> handler, bool isCheat = false)
             {
+                id = id.ToLowerInvariant();
                 Console.Register(id: $"{ModPrefix}.{id}", handler: handler, isCheat: isCheat);
             }
 
@@ -76,6 +79,7 @@ namespace ShapezShifter.Flow
                 Action<DebugConsole.CommandContext> handler,
                 bool isCheat = false)
             {
+                id = id.ToLowerInvariant();
                 Console.Register(id: $"{ModPrefix}.{id}", handler: handler, isCheat: isCheat, option0: option0);
             }
 
@@ -86,6 +90,7 @@ namespace ShapezShifter.Flow
                 Action<DebugConsole.CommandContext> handler,
                 bool isCheat = false)
             {
+                id = id.ToLowerInvariant();
                 Console.Register(
                     id: $"{ModPrefix}.{id}",
                     handler: handler,
