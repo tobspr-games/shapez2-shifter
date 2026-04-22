@@ -52,7 +52,7 @@ namespace ShapezShifter.Flow
             public ModConsoleCommandWrapper(IMod mod, IDebugConsole console)
             {
                 Console = console;
-                ModPrefix = mod.GetType().Assembly.GetName().Name;
+                ModPrefix = mod.GetType().Assembly.FullName;
             }
 
             public List<string> GetAutoCompletions(string start)
