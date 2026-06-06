@@ -33,6 +33,7 @@ namespace ShapezShifter.SharpDetour
             }
         }
 
+        [Obsolete("Use the version that gets passed self")]
         public static Hook CreatePrefixHook<TObject, TArg0>(
             Expression<Action<TObject, TArg0>> original,
             Func<TArg0, TArg0> prefix)
@@ -44,6 +45,21 @@ namespace ShapezShifter.SharpDetour
             void Patch(Action<TObject, TArg0> orig, TObject self, TArg0 arg0)
             {
                 arg0 = prefix(arg0);
+                orig(self, arg0);
+            }
+        }
+        
+        public static Hook CreatePrefixHook<TObject, TArg0>(
+            Expression<Action<TObject, TArg0>> original,
+            Func<TObject, TArg0, TArg0> prefix)
+        {
+            MethodInfo actualMethodBody = GetRuntimeMethod<TObject>(original);
+
+            return new Hook(actualMethodBody, target: (Action<Action<TObject, TArg0>, TObject, TArg0>)Patch);
+
+            void Patch(Action<TObject, TArg0> orig, TObject self, TArg0 arg0)
+            {
+                arg0 = prefix(self, arg0);
                 orig(self, arg0);
             }
         }
