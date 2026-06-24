@@ -1,5 +1,6 @@
 using System;
 using Core.Logging;
+using Game.Core.Content.Buildings;
 using Game.Core.Rendering.MeshGeneration;
 using Global.Core;
 using MonoMod.RuntimeDetour;
@@ -19,14 +20,15 @@ namespace ShapezShifter.Hijack
             Logger = logger;
             BuildingsFactoryFromMetadataHook =
                 DetourHelper
-                   .CreateStaticPostfixHook<MetaGameModeBuildings, IMeshCache, VisualThemeBaseResources, GameBuildings>(
-                        original: (meta, meshCache, resources) =>
-                            GameModeBuildingsFactory.FromMetadata(meta, meshCache, resources),
+                   .CreateStaticPostfixHook<IBuildingsCatalog, AuthoringBuildings, IMeshCache, VisualThemeBaseResources, GameBuildings>(
+                        original: (catalog, meta, meshCache, resources) =>
+                            GameModeBuildingsFactory.FromMetadata(catalog, meta, meshCache, resources),
                         postfix: Postfix);
         }
 
         private GameBuildings Postfix(
-            MetaGameModeBuildings metaBuildings,
+            IBuildingsCatalog catalog,
+            AuthoringBuildings meta,
             IMeshCache meshCache,
             VisualThemeBaseResources theme,
             GameBuildings gameBuildings)
@@ -40,7 +42,7 @@ namespace ShapezShifter.Hijack
             foreach (IBuildingsRewirer buildingsRewirer in buildingsRewirers)
             {
                 gameBuildings = buildingsRewirer.ModifyGameBuildings(
-                    metaBuildings: metaBuildings,
+                    meta,
                     gameBuildings: gameBuildings,
                     meshCache: meshCache,
                     theme: theme);

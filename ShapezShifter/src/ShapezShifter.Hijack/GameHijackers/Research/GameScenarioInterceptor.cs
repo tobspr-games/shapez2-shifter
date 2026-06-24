@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Reflection;
 using Core.Logging;
+using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
-using ShapezShifter.SharpDetour;
 
 namespace ShapezShifter.Hijack
 {
@@ -9,32 +11,39 @@ namespace ShapezShifter.Hijack
     {
         private readonly IRewirerProvider RewirerProvider;
         private readonly ILogger Logger;
-        private readonly Hook ScenarioDeserializationHook;
+        private readonly ILHook IlHook;
 
         public GameScenarioInterceptor(IRewirerProvider rewirerProvider, ILogger logger)
         {
             RewirerProvider = rewirerProvider;
             Logger = logger;
-            ScenarioDeserializationHook = DetourHelper.CreatePostfixHook<GameData, ScenarioId, GameScenario>(
-                original: (gameData, uniqueId) => gameData.GetScenarioCloned(uniqueId),
-                postfix: Postfix);
+
+            MethodInfo target = typeof(GameMode).GetMethod("From", BindingFlags.Static | BindingFlags.Public);
+            IlHook = new ILHook(
+                target!,
+                ctx =>
+                {
+                    var cursor = new ILCursor(ctx);
+                    cursor.GotoNext(MoveType.After, i => i.MatchNewobj<GameScenario>());
+                    cursor.EmitDelegate<Func<GameScenario, GameScenario>>(Postfix);
+                });
         }
 
-        private GameScenario Postfix(GameData data, ScenarioId uniqueId, GameScenario gameScenario)
+        public void Dispose()
+        {
+            IlHook.Dispose();
+        }
+
+        private GameScenario Postfix(GameScenario gameScenario)
         {
             Logger.Info?.Log("Modifying research");
-            var scenarioRewirers = RewirerProvider.RewirersOfType<IGameScenarioRewirer>();
+            IEnumerable<IGameScenarioRewirer> scenarioRewirers = RewirerProvider.RewirersOfType<IGameScenarioRewirer>();
             foreach (IGameScenarioRewirer scenarioRewirer in scenarioRewirers)
             {
                 gameScenario = scenarioRewirer.ModifyGameScenario(gameScenario);
             }
 
             return gameScenario;
-        }
-
-        public void Dispose()
-        {
-            ScenarioDeserializationHook.Dispose();
         }
     }
 }

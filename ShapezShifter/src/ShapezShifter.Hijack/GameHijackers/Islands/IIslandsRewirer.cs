@@ -4,7 +4,7 @@ namespace ShapezShifter.Hijack
     {
         GameIslands ModifyGameIslands(
             IslandDefinitionFactory factory,
-            MetaGameModeIslands metaIslands,
+            AuthoringIslands metaIslands,
             GameIslands gameIslands);
     }
 }

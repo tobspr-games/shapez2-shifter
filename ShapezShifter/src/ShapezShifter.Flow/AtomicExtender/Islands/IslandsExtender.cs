@@ -1,4 +1,5 @@
 using Core.Events;
+using Game.Core.Content.Islands;
 using ShapezShifter.Hijack;
 
 namespace ShapezShifter.Flow.Atomic
@@ -23,7 +24,7 @@ namespace ShapezShifter.Flow.Atomic
 
         public GameIslands ModifyGameIslands(
             IslandDefinitionFactory factory,
-            MetaGameModeIslands metaIslands,
+            AuthoringIslands metaIslands,
             GameIslands gameIslands)
         {
             IslandDefinitionGroup islandGroup = IslandGroupBuilder.BuildAndRegister(gameIslands);

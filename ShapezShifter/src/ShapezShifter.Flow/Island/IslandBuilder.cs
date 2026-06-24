@@ -117,9 +117,7 @@ namespace ShapezShifter.Flow
                 description: groupPresentationData.Description,
                 wikiEntryId: WikiEntryId.Empty,
                 icon: groupPresentationData.Icon,
-                showAsReward: groupPresentationData.ShowAsReward,
-                isLockedByStoreContent: false,
-                storeContentId: UnlockableStoreContentId.Empty);
+                showAsReward: groupPresentationData.ShowAsReward);
 
             island.CustomData.AttachOrReplace(islandPresentationData);
             island.CustomData.AttachOrReplace(group);

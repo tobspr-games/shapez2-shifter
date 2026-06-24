@@ -1,3 +1,5 @@
+using Game.Core.Content.Buildings;
+
 namespace ShapezShifter.Flow
 {
     public interface IBuildingGroupBuilder : IBuildingGroupBaseDataProvider

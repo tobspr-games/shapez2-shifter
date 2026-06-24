@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Core.Localization;
+using Game.Core.Content.Buildings;
 using Game.Core.Research;
 using UnityEngine;
 
@@ -395,7 +396,6 @@ namespace ShapezShifter.Flow
                 showStatBuildingsPerFullBelt: ShowStatBuildingsPerFullBelt,
                 showInSpeedOverview: ShowInSpeedOverview,
                 showAsResearchReward: ShowAsResearchReward,
-                requireStoreContentId: RequireStoreContentId,
                 linkedWikiEntry: LinkedEntryId,
                 placementIndicatorTypes: PlacementIndicators.ToArray() ?? Array.Empty<Type>(),
                 placementRequirements: PlacementRequirements ?? Array.Empty<IBuildingPlacementRequirement>(),

@@ -51,6 +51,11 @@
             <Private>False</Private>
         </Reference>
 
+        <Reference Include="Game.Core.Content">
+            <HintPath>$(SPZ2_PATH)\Game.Core.Content.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+
         <Reference Include="Game.Core.Map">
             <HintPath>$(SPZ2_PATH)\Game.Core.Map.dll</HintPath>
             <Private>False</Private>

@@ -1,4 +1,5 @@
 using Core.Events;
+using Game.Core.Content.Buildings;
 using Game.Core.Rendering.MeshGeneration;
 using ShapezShifter.Hijack;
 
@@ -23,7 +24,7 @@ namespace ShapezShifter.Flow.Atomic
         }
 
         public GameBuildings ModifyGameBuildings(
-            MetaGameModeBuildings metaBuildings,
+            AuthoringBuildings metaBuildings,
             GameBuildings gameBuildings,
             IMeshCache meshCache,
             VisualThemeBaseResources theme)
