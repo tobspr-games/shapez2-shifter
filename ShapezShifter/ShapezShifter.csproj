@@ -162,6 +162,8 @@
 
     <ItemGroup>
         <Publicize Include="SPZGameAssembly" IncludeVirtualMembers="false"/>
+        <Publicize Include="Game.Core.Content" IncludeVirtualMembers="false"/>
+
         <Publicize Include="Core.Localization" IncludeVirtualMembers="false"/>
         <Publicize Include="Game.Orchestration" IncludeVirtualMembers="false"/>
         <Publicize Include="Game.Core.Map.Simulation" IncludeVirtualMembers="false"/>
