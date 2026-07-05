@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace ShapezShifter.Flow
 {
-    public class BuildingGroupBuilder
+    internal class BuildingGroupBuilder
         : IIdentifiableBuildingGroupBuilder,
           IIdentifiableAndTitledBuildingGroupBuilder,
           IIdentifiableTitledAndDescribedBuildingGroupBuilder,
@@ -58,9 +58,9 @@ namespace ShapezShifter.Flow
             IText description,
             Sprite icon)
         {
-            Title = title;
-            Description = description;
-            Icon = icon;
+            this.WithTitle(title)
+                .WithDescription(description)
+                .WithIcon(icon);
             return this;
         }
 
@@ -82,16 +82,6 @@ namespace ShapezShifter.Flow
             return this;
         }
 
-        public IIdentifiableAndPresentableBuildingGroupBuilder WithIcon(string filePath)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IIdentifiableAndPresentableBuildingGroupBuilder WithIcon(Texture texture)
-        {
-            throw new NotImplementedException();
-        }
-
         public IIdentifiablePresentableAndCategorizedBuildingGroupBuilder AsTransportableBuilding()
         {
             IsTransportBuilding = true;
@@ -106,15 +96,6 @@ namespace ShapezShifter.Flow
 
         public IBuildingGroupBuilder WithPreferredPlacement(DefaultPreferredPlacementMode defaultPreferredPlacementMode)
         {
-            DefaultPreferredPlacement = defaultPreferredPlacementMode;
-            return this;
-        }
-
-        public IBuildingGroupBuilder WithConfig(
-            bool isTransportBuilding,
-            DefaultPreferredPlacementMode defaultPreferredPlacementMode)
-        {
-            IsTransportBuilding = isTransportBuilding;
             DefaultPreferredPlacement = defaultPreferredPlacementMode;
             return this;
         }
@@ -253,77 +234,110 @@ namespace ShapezShifter.Flow
 
         public IBuildingGroupBuilder RenderingConnectorIndicators()
         {
-            throw new NotImplementedException();
+            RenderConnectorIndicators = true;
+            return this;
         }
 
         public IBuildingGroupBuilder NotRenderingConnectorIndicator()
         {
-            throw new NotImplementedException();
+            RenderConnectorIndicators = false;
+            return this;
         }
 
         public IBuildingGroupBuilder RenderingConnectorConflictIndicators()
         {
-            throw new NotImplementedException();
+            RenderConflictingConnectorIndicators = true;
+            return this;
         }
 
         public IBuildingGroupBuilder NotRenderingConnectorConflictIndicator()
         {
-            throw new NotImplementedException();
+            RenderConflictingConnectorIndicators = false;
+            return this;
+        }
+
+        public IBuildingGroupBuilder ShowingNotchIndicators()
+        {
+            ShowNotchIndicators = true;
+            return this;
+        }
+
+        public IBuildingGroupBuilder NotShowingNotchIndicators()
+        {
+            ShowNotchIndicators = false;
+            return this;
         }
 
         public IBuildingGroupBuilder ShowingBeltProcessingTimeStat()
         {
-            throw new NotImplementedException();
+            ShowStatBeltProcessingTime = true;
+            return this;
         }
 
         public IBuildingGroupBuilder NotShowingBeltProcessingTimeStat()
         {
-            throw new NotImplementedException();
+            ShowStatBeltProcessingTime = false;
+            return this;
         }
 
         public IBuildingGroupBuilder ShowingBuildingsPerFullBeltStat()
         {
-            throw new NotImplementedException();
+            ShowStatBuildingsPerFullBelt = true;
+            return this;
         }
 
         public IBuildingGroupBuilder NotShowingBuildingsPerFullBeltStat()
         {
-            throw new NotImplementedException();
+            ShowStatBuildingsPerFullBelt = false;
+            return this;
+        }
+
+        public IBuildingGroupBuilder ShowingInSpeedOverview()
+        {
+            ShowInSpeedOverview = true;
+            return this;
+        }
+
+        public IBuildingGroupBuilder NotShowingInSpeedOverview()
+        {
+            ShowInSpeedOverview = false;
+            return this;
         }
 
         public IBuildingGroupBuilder DisplayableAsReward()
         {
-            throw new NotImplementedException();
+            ShowAsResearchReward = true;
+            return this;
         }
 
         public IBuildingGroupBuilder NotDisplayableAsReward()
         {
-            throw new NotImplementedException();
+            ShowAsResearchReward = false;
+            return this;
         }
 
         public IBuildingGroupBuilder SkippingReplacementConnectorChecks()
         {
-            throw new NotImplementedException();
+            ShouldSkipReplacementIOChecks = true;
+            return this;
         }
 
         public IBuildingGroupBuilder NotSkippingReplacementConnectorChecks()
         {
-            throw new NotImplementedException();
+            ShouldSkipReplacementIOChecks = false;
+            return this;
         }
 
         public IBuildingGroupBuilder WithConnectionMultiplier(int autoAttractScore)
         {
-            throw new NotImplementedException();
+            AutoAttractIOScoreMultiplier = autoAttractScore;
+            return this;
         }
 
         public IBuildingGroupBuilder WithPipetteOverride(BuildingDefinitionGroupId overrideGroup)
         {
-            throw new NotImplementedException();
-        }
-
-        public IBuildingGroupBuilder WithoutPipetteOverride()
-        {
-            throw new NotImplementedException();
+            PipetteOverrideId = overrideGroup;
+            return this;
         }
 
         public IBuildingGroupBuilder WithPlacementIndicator<TPlacementIndicator>()
@@ -333,19 +347,10 @@ namespace ShapezShifter.Flow
             return this;
         }
 
-        public IBuildingGroupBuilder WithoutPlacementIndicators()
+        public IBuildingGroupBuilder WithPlacementRequirements(IEnumerable<IBuildingPlacementRequirement> requirements)
         {
-            throw new NotImplementedException();
-        }
-
-        public IBuildingGroupBuilder WithPlacementRequirements()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IBuildingGroupBuilder WithoutPlacementRequirements()
-        {
-            throw new NotImplementedException();
+            PlacementRequirements = requirements;
+            return this;
         }
 
         public IBuildingGroupBuilder WithCustomStructureOverview(MetaStructureOverview structureOverview)
@@ -358,11 +363,6 @@ namespace ShapezShifter.Flow
         {
             return WithCustomStructureOverview(
                 new MetaStructureOverview { Slots = Array.Empty<MetaStructureOverview.IOData>() });
-        }
-
-        public IBuildingGroupBuilder WithoutStructureOverview()
-        {
-            throw new NotImplementedException();
         }
 
         public BuildingDefinitionGroup BuildAndRegister(GameBuildings gameBuildings)
@@ -404,16 +404,6 @@ namespace ShapezShifter.Flow
             gameBuildings._All.Add(buildingGroup);
             gameBuildings._VariantsById.Add(key: buildingGroup.Id, value: buildingGroup);
             return buildingGroup;
-        }
-
-        public IBuildingGroupBuilder WithConfig()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IIdentifiableAndPresentableBuildingGroupBuilder WithDescription(Sprite icon)
-        {
-            throw new NotImplementedException();
         }
     }
 }

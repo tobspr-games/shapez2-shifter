@@ -1,4 +1,5 @@
 using Game.Core.Content.Buildings;
+using System.Collections.Generic;
 
 namespace ShapezShifter.Flow
 {
@@ -56,6 +57,10 @@ namespace ShapezShifter.Flow
 
         IBuildingGroupBuilder NotRenderingConnectorConflictIndicator();
 
+        IBuildingGroupBuilder ShowingNotchIndicators();
+
+        IBuildingGroupBuilder NotShowingNotchIndicators();
+
         IBuildingGroupBuilder ShowingBeltProcessingTimeStat();
 
         IBuildingGroupBuilder NotShowingBeltProcessingTimeStat();
@@ -63,6 +68,10 @@ namespace ShapezShifter.Flow
         IBuildingGroupBuilder ShowingBuildingsPerFullBeltStat();
 
         IBuildingGroupBuilder NotShowingBuildingsPerFullBeltStat();
+
+        IBuildingGroupBuilder ShowingInSpeedOverview();
+
+        IBuildingGroupBuilder NotShowingInSpeedOverview();
 
         IBuildingGroupBuilder DisplayableAsReward();
 
@@ -76,22 +85,14 @@ namespace ShapezShifter.Flow
 
         IBuildingGroupBuilder WithPipetteOverride(BuildingDefinitionGroupId overrideGroup);
 
-        IBuildingGroupBuilder WithoutPipetteOverride();
-
         IBuildingGroupBuilder WithPlacementIndicator<TPlacementIndicator>()
             where TPlacementIndicator : IBuildingPlacementIndicator;
 
-        IBuildingGroupBuilder WithoutPlacementIndicators();
-
-        IBuildingGroupBuilder WithPlacementRequirements();
-
-        IBuildingGroupBuilder WithoutPlacementRequirements();
+        IBuildingGroupBuilder WithPlacementRequirements(IEnumerable<IBuildingPlacementRequirement> requirements);
 
         IBuildingGroupBuilder WithCustomStructureOverview(MetaStructureOverview structureOverview);
 
         IBuildingGroupBuilder WithDefaultStructureOverview();
-
-        IBuildingGroupBuilder WithoutStructureOverview();
 
         BuildingDefinitionGroup BuildAndRegister(GameBuildings gameBuildings);
     }
