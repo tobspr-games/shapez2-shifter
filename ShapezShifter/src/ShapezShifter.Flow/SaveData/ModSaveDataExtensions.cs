@@ -49,9 +49,7 @@ namespace ShapezShifter.Flow
         /// <param name="defaultDataFactory">A factory that creates a default instance of the data</param>
         public static void AttachSaveData<T>(this IMod mod, IFactory<T> defaultDataFactory)
         {
-            string dataName = typeof(T).FullName;
-            string assemblyName = mod.GetType().Assembly.GetName().Name;
-            string fullName = $"{assemblyName}-{dataName}.json";
+            string fullName = mod.ResolveId<T>();
             string fileName = $"{fullName}.json";
 
             var rewirer = new ModSaveDataRewirer<T>(

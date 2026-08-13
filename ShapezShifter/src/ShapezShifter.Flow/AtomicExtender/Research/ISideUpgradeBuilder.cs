@@ -99,9 +99,13 @@ namespace ShapezShifter.Flow.Atomic
                 category: SideUpgradePresentationData.Category);
 
             progression._SideUpgrades.Add(upgrade);
+            progression._ShopItems.Add(upgrade);
 
             progression._AllUpgrades.Add(upgrade);
             progression._UpgradesById[upgrade.Id] = upgrade;
+
+            if (!progression._SideUpgradeCategories.Contains(upgrade.Category))
+                progression._SideUpgradeCategories.Add(upgrade.Category);
 
             return upgrade;
         }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Core.Collections;
 using Core.Factory;
+using Game.Core.Content.Islands;
 using Game.Core.Coordinates;
 using Game.Core.Rendering.Islands.PlayingField;
 using Game.Core.Research;
@@ -39,7 +40,7 @@ namespace ShapezShifter.Flow
 
         public IIdentifiableMappableIslandBuilder WithPerChunkColliders()
         {
-            var chunks = IslandDefinition.Layout.GetChunkPositions();
+            IReadOnlyList<ChunkVector> chunks = IslandDefinition.Layout.GetChunkPositions();
 
             var colliders = new List<CollisionBox>();
             foreach (ChunkVector coordinate in chunks)
@@ -59,7 +60,7 @@ namespace ShapezShifter.Flow
 
         public IIdentifiableMappableIslandBuilder WithBoundingCollider()
         {
-            var chunks = IslandDefinition.Layout.GetChunkPositions();
+            IReadOnlyList<ChunkVector> chunks = IslandDefinition.Layout.GetChunkPositions();
 
             var min = new LocalVector(x: float.MaxValue, y: float.MaxValue, z: float.MaxValue);
             var max = new LocalVector(x: float.MinValue, y: float.MinValue, z: float.MinValue);
@@ -106,6 +107,17 @@ namespace ShapezShifter.Flow
             ((List<IIslandDefinition>)gameIslands.AllDefinitions).Add(IslandDefinition);
             gameIslands.DefinitionsById.Add(key: IslandDefinition.Id, value: IslandDefinition);
 
+            var gameCatalog = (IslandsCatalog)gameIslands.CatalogPair.GameCatalog;
+            var gameSessionCatalog = (IslandsCatalog)gameIslands.CatalogPair.GameSessionCatalog;
+
+            IslandDefinitionId islandId = IslandDefinition.Id;
+            IslandDefinitionGroupId groupId = islandGroup.Id;
+
+            gameCatalog.GroupMap.Add(islandId, groupId);
+            gameCatalog.GroupedMap.AddValue(groupId, islandId);
+            gameSessionCatalog.GroupMap.Add(islandId, groupId);
+            gameSessionCatalog.GroupedMap.AddValue(groupId, islandId);
+
             return IslandDefinition;
         }
 
@@ -117,9 +129,7 @@ namespace ShapezShifter.Flow
                 description: groupPresentationData.Description,
                 wikiEntryId: WikiEntryId.Empty,
                 icon: groupPresentationData.Icon,
-                showAsReward: groupPresentationData.ShowAsReward,
-                isLockedByStoreContent: false,
-                storeContentId: UnlockableStoreContentId.Empty);
+                showAsReward: groupPresentationData.ShowAsReward);
 
             island.CustomData.AttachOrReplace(islandPresentationData);
             island.CustomData.AttachOrReplace(group);

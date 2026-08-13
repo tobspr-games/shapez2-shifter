@@ -1,8 +1,8 @@
 {
-  "Name": "tobspr.ShapezShifter",
-  "Version": "1.0.0",
-  "Title": "Shapez 2 - Extended API",
-  "Description": "Extended functionality, convenience and mod support for shapez 2",
+  "Name": "tobspr.ShapezShifterDev",
+  "Version": "1.2.0",
+  "Title": "Shapez 2 - Extended API (Develop)",
+  "Description": "Develop version of ShapezShifter (only suitable for mod developers)",
   "Author": "tobspr Games",
   "SavedModVersionCompabilityRangeWithSelf": "*",
   "GameVersionSupportRange": "*",
@@ -12,6 +12,7 @@
   "Assemblies": [
     "ShapezShifter.dll"
   ],
+  "Replaces": "steam:3542611357",
   "Dependencies": [
     {
       "ModId": "steam:3542712030",

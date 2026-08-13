@@ -1,5 +1,6 @@
 using System;
 using Core.Logging;
+using Game.Core.Content.Islands;
 using MonoMod.RuntimeDetour;
 using ShapezShifter.SharpDetour;
 
@@ -16,14 +17,15 @@ namespace ShapezShifter.Hijack
             RewirerProvider = rewirerProvider;
             Logger = logger;
             IslandsFactoryFromMetadataHook =
-                DetourHelper.CreatePostfixHook<IslandDefinitionFactory, MetaGameModeIslands, GameIslands>(
-                    original: (factory, meta) => factory.BakeMetadataIntoRuntime(meta),
+                DetourHelper.CreatePostfixHook<IslandDefinitionFactory, IIslandCatalogPair, AuthoringIslands, GameIslands>(
+                    original: (factory, pair, meta) => factory.BakeMetadataIntoRuntime(pair, meta),
                     postfix: Postfix);
         }
 
         private GameIslands Postfix(
             IslandDefinitionFactory islandDefinitionFactory,
-            MetaGameModeIslands metaIslands,
+            IIslandCatalogPair catalogPair,
+            AuthoringIslands metaIslands,
             GameIslands gameIslands)
         {
             var islandsRewirers = RewirerProvider.RewirersOfType<IIslandsRewirer>();

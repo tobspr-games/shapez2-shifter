@@ -1,4 +1,5 @@
 using Core.Events;
+using Game.Core.Content.Buildings;
 using ShapezShifter.Flow.Research;
 using ShapezShifter.Hijack;
 

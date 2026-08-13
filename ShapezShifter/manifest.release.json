@@ -1,0 +1,27 @@
+{
+  "Name": "tobspr.ShapezShifter",
+  "Version": "1.2.0",
+  "Title": "Shapez 2 - Extended API",
+  "Description": "Extended functionality, convenience and mod support for shapez 2",
+  "Author": "tobspr Games",
+  "SavedModVersionCompabilityRangeWithSelf": "*",
+  "GameVersionSupportRange": "*",
+  "AffectsSaveGames": false,
+  "Conflicts": [],
+  "IconPath": "",
+  "Assemblies": [
+    "ShapezShifter.dll"
+  ],
+  "Dependencies": [
+    {
+      "ModId": "steam:3542712030",
+      "ModTitle": "MonoMod.RuntimeDetour",
+      "Version": "^25.2.3"
+    },
+    {
+      "ModId": "steam:3591335975",
+      "ModTitle": "AssimpNet",
+      "Version": "4.*.*"
+    }
+  ]
+}

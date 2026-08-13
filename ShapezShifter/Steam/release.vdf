@@ -1,0 +1,10 @@
+"workshopitem"
+{
+    "appid" "2162800"
+    "publishedfileid" "3542611357"
+    "contentfolder" "${CONTENT_PATH}"
+    "previewfile" "${PREVIEW_IMG}"
+    "visibility" "0"
+    "title" "Shapez Shifter"
+    "description" "Curated set of tools for extending Shapez 2 features and adding extra content for the game. This mod does not change anything for the game experience, but other mods might rely on it as a dependency"
+}

@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShapezShifterTests", "..\Sh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShapezShifterEnclosedTypes", "..\ShapezShifterEnclosedTypes\ShapezShifterEnclosedTypes.csproj", "{04100994-7195-474E-81D4-143166C5003C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMod.RuntimeDetour", "..\MonoMod.RuntimeDetour\MonoMod.RuntimeDetour.csproj", "{DAC68B71-F405-402B-921D-CCF6DD71890F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMod.RuntimeDetour.Mod", "..\MonoMod.RuntimeDetour.Mod\MonoMod.RuntimeDetour.Mod.csproj", "{DAC68B71-F405-402B-921D-CCF6DD71890F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssimpNet", "..\AssimpNet\AssimpNet.csproj", "{41BAB841-E903-4B09-BCF1-05F7A4B5B97E}"
 EndProject

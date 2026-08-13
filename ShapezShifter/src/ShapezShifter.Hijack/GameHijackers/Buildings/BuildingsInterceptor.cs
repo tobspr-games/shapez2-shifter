@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Core.Logging;
+using Game.Core.Content.Buildings;
 using Game.Core.Rendering.MeshGeneration;
 using Global.Core;
 using MonoMod.RuntimeDetour;
@@ -19,19 +21,26 @@ namespace ShapezShifter.Hijack
             Logger = logger;
             BuildingsFactoryFromMetadataHook =
                 DetourHelper
-                   .CreateStaticPostfixHook<MetaGameModeBuildings, IMeshCache, VisualThemeBaseResources, GameBuildings>(
-                        original: (meta, meshCache, resources) =>
-                            GameModeBuildingsFactory.FromMetadata(meta, meshCache, resources),
+                   .CreateStaticPostfixHook<IBuildingCatalogPair, AuthoringBuildings, IMeshCache,
+                        VisualThemeBaseResources, GameBuildings>(
+                        original: (catalog, meta, meshCache, resources) =>
+                            GameModeBuildingsFactory.FromMetadata(catalog, meta, meshCache, resources),
                         postfix: Postfix);
         }
 
+        public void Dispose()
+        {
+            BuildingsFactoryFromMetadataHook.Dispose();
+        }
+
         private GameBuildings Postfix(
-            MetaGameModeBuildings metaBuildings,
+            IBuildingCatalogPair catalog,
+            AuthoringBuildings meta,
             IMeshCache meshCache,
             VisualThemeBaseResources theme,
             GameBuildings gameBuildings)
         {
-            var buildingsRewirers = RewirerProvider.RewirersOfType<IBuildingsRewirer>();
+            IEnumerable<IBuildingsRewirer> buildingsRewirers = RewirerProvider.RewirersOfType<IBuildingsRewirer>();
 
             Logger.Info?.Log("Intercepting buildings creation");
 
@@ -40,7 +49,7 @@ namespace ShapezShifter.Hijack
             foreach (IBuildingsRewirer buildingsRewirer in buildingsRewirers)
             {
                 gameBuildings = buildingsRewirer.ModifyGameBuildings(
-                    metaBuildings: metaBuildings,
+                    meta,
                     gameBuildings: gameBuildings,
                     meshCache: meshCache,
                     theme: theme);
@@ -49,11 +58,6 @@ namespace ShapezShifter.Hijack
             Logger.Info?.Log($"New buildings: {gameBuildings.All.Count} + {buildingsCount}");
 
             return gameBuildings;
-        }
-
-        public void Dispose()
-        {
-            BuildingsFactoryFromMetadataHook.Dispose();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace ShapezShifter.Flow.Research
+﻿using Game.Core.Content.Buildings;
+
+namespace ShapezShifter.Flow.Research
 {
     public interface IBuildingResearchProgressionExtender
     {

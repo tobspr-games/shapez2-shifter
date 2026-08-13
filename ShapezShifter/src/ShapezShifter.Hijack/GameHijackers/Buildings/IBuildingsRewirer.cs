@@ -5,7 +5,7 @@ namespace ShapezShifter.Hijack
     public interface IBuildingsRewirer : IRewirer
     {
         GameBuildings ModifyGameBuildings(
-            MetaGameModeBuildings metaBuildings,
+            AuthoringBuildings metaBuildings,
             GameBuildings gameBuildings,
             IMeshCache meshCache,
             VisualThemeBaseResources theme);

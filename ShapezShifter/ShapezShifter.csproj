@@ -8,14 +8,18 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <OutputPath>$(SPZ2_PERSISTENT)\mods\ShapezShifter</OutputPath>
+        <Configurations>Debug;Release</Configurations>
+        <FolderName>ShapezShifter</FolderName>
+        <PublishMode>release</PublishMode>
+        <FolderName Condition="'$(Configuration)' == 'Debug'">ShapezShifterDev</FolderName>
+        <PublishMode Condition="'$(Configuration)' == 'Debug'">develop</PublishMode>
+        <OutputPath>$(SPZ2_PERSISTENT)\mods\$(FolderName)</OutputPath>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     </PropertyGroup>
 
     <Target Name="SteamPublish">
-        <Exec Command="echo Executing Steam Publishing Bash Commands"/>
-        <Exec Command='sh .\Steam\SteamPublish.sh "$(OutputPath)'/>
-        <Exec Command="echo Done!"/>
+        <Exec Command="echo $(pwd)"/>
+        <Exec Command='sh .\Steam\SteamPublish.sh --$(PublishMode) "$(OutputPath)'/>
     </Target>
 
 
@@ -25,8 +29,15 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="MonoMod.RuntimeDetour" Version="25.3.0"/>
+        <PackageReference Include="MonoMod.RuntimeDetour" Version="25.3.4"/>
         <PackageReference Include="NUnit" Version="3.14.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="manifest.$(PublishMode).json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <TargetPath>manifest.json</TargetPath>
+        </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -37,6 +48,11 @@
 
         <Reference Include="Unity.Core">
             <HintPath>$(SPZ2_PATH)\Unity.Core.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+
+        <Reference Include="Game.Core.Content">
+            <HintPath>$(SPZ2_PATH)\Game.Core.Content.dll</HintPath>
             <Private>False</Private>
         </Reference>
 
@@ -146,18 +162,14 @@
 
     <ItemGroup>
         <Publicize Include="SPZGameAssembly" IncludeVirtualMembers="false"/>
+        <Publicize Include="Game.Core.Content" IncludeVirtualMembers="false"/>
+
         <Publicize Include="Core.Localization" IncludeVirtualMembers="false"/>
         <Publicize Include="Game.Orchestration" IncludeVirtualMembers="false"/>
         <Publicize Include="Game.Core.Map.Simulation" IncludeVirtualMembers="false"/>
         <Publicize Include="Game.Core.Rendering" IncludeVirtualMembers="false"/>
         <DoNotPublicize Include="Game.Orchestration:ParentToolbarElementData" IncludeCompilerGeneratedMembers="false" IncludeVirtualMembers="false"/>
         <DoNotPublicize Include="Game.Orchestration:RootToolbarElementData" IncludeCompilerGeneratedMembers="false" IncludeVirtualMembers="false"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Update="manifest.json">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
     </ItemGroup>
 
     <ItemGroup>

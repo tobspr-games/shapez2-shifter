@@ -1,0 +1,10 @@
+"workshopitem"
+{
+    "appid" "2162800"
+    "publishedfileid" "3738646868"
+    "contentfolder" "${CONTENT_PATH}"
+    "previewfile" "${PREVIEW_IMG}"
+    "visibility" "0"
+    "title" "Shapez Shifter [Developer]"
+    "description" "Development version of Shapez Shifter, meant to be used only by mod developers"
+}

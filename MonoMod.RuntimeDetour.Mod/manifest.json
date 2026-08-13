@@ -1,5 +1,5 @@
 {
-  "Version": "25.2.3",
+  "Version": "25.3.4",
   "Description": "A flexible and easily extensible runtime detouring library, supporting x86/x86_64 on .NET Framework, .NET Core, and Mono.",
   "Author": "0x0ade",
   "Assemblies": [

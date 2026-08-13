@@ -36,12 +36,8 @@ namespace ShapezShifter.Flow
             {
                 throw new ArgumentException(message: "Filename cannot be null or empty", paramName: nameof(fileName));
             }
-
-            if (Path.HasExtension("json"))
-            {
-                fileName = Path.ChangeExtension(path: fileName, extension: "json");
-            }
-
+            
+            fileName = Path.ChangeExtension(path: fileName, extension: "json");
             FileName = fileName;
             DefaultDataFactory = defaultDataFactory;
             Logger = logger;

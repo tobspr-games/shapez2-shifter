@@ -1,4 +1,6 @@
-﻿namespace ShapezShifter.Flow.Research
+﻿using Game.Core.Content.Islands;
+
+namespace ShapezShifter.Flow.Research
 {
     public interface IIslandResearchProgressionExtender
     {

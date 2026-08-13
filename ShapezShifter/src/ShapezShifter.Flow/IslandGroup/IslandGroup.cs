@@ -1,3 +1,5 @@
+using Game.Core.Content.Islands;
+
 namespace ShapezShifter.Flow
 {
     public static class IslandGroup
