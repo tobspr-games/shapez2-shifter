@@ -14,14 +14,22 @@ namespace ShapezShifter.Kit
         {
             using AssimpContext importer = new();
 
-            LogStream logStream = new(delegate(string msg, string _) { Debugging.Logger.Info?.Log(msg); });
+            LogStream logStream = new(delegate (string msg, string _) { Debugging.Logger.Info?.Log(msg); });
             logStream.Attach();
 
-            Scene scene = importer.ImportFile(
-                file: file,
-                postProcessFlags: PostProcessPreset.TargetRealTimeMaximumQuality);
+            try
+            {
+                Scene scene = importer.ImportFile(
+                    file: file,
+                    postProcessFlags: PostProcessPreset.TargetRealTimeMaximumQuality);
 
-            return AssimpToUnityMeshConverter.ConvertStaticMesh(scene.Meshes.Single());
+                return AssimpToUnityMeshConverter.ConvertStaticMesh(scene.Meshes.Single());
+            }
+            finally
+            {
+                logStream.Detach();
+                logStream.Dispose();
+            }
         }
     }
 }
