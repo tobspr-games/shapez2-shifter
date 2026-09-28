@@ -15,7 +15,7 @@ namespace ShapezShifter.Hijack
 
         internal static int Version;
 
-        private static readonly Dictionary<RewirerHandle, IRewirer> RewirersMap = new();
+        private static readonly SortedDictionary<RewirerHandle, IRewirer> RewirersMap = new();
         private static RewirerHandle LastHandle = RewirerHandle.Invalid;
 
         public static RewirerHandle AddRewirer<TRewirer>(TRewirer rewirer)
