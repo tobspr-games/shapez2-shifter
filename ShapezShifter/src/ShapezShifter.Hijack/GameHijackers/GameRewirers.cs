@@ -15,7 +15,7 @@ namespace ShapezShifter.Hijack
 
         internal static int Version;
 
-        private static readonly Dictionary<RewirerHandle, IRewirer> RewirersMap = new();
+        private static readonly SortedDictionary<RewirerHandle, IRewirer> RewirersMap = new();
         private static RewirerHandle LastHandle = RewirerHandle.Invalid;
 
         public static RewirerHandle AddRewirer<TRewirer>(TRewirer rewirer)
@@ -26,6 +26,19 @@ namespace ShapezShifter.Hijack
             Version++;
             Debugging.Logger.Info?.Log($"Adding rewirer {rewirer.GetType().Name} with handle {LastHandle}");
             return LastHandle;
+        }
+        
+        public static void AddRewirer<TRewirer>(RewirerHandle reservedHandle, TRewirer rewirer)
+            where TRewirer : IRewirer
+        {
+            if (RewirersMap.ContainsKey(reservedHandle))
+            {
+                Debugging.Logger.Error?.Log($"Tried adding rewirer {rewirer.GetType().Name} with duplicated handle {reservedHandle}");
+                return;
+            }
+            RewirersMap.Add(key: reservedHandle, value: rewirer);
+            Version++;
+            Debugging.Logger.Info?.Log($"Adding rewirer {rewirer.GetType().Name} with reserved handle {reservedHandle}");
         }
 
         public static void RemoveRewirer(RewirerHandle rewirerHandle)
@@ -56,6 +69,17 @@ namespace ShapezShifter.Hijack
             }
 
             rewirer = typedRewirer;
+        }
+
+        /// <summary>
+        /// Reserves a <c>RewirerHandle</c> that can be used in <c>AddRewirer(RewirerHandle, TRewirer)</c>
+        /// to register a rewirer with a known handle. This is useful to ensure rewirers are invoked in
+        /// a consistent order even when registering and removing a rewirer multiple times.  
+        /// </summary>
+        public static RewirerHandle ReserveHandle()
+        {
+            LastHandle = LastHandle.Next();
+            return LastHandle;
         }
     }
 }

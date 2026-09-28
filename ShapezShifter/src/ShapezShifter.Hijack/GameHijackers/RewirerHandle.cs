@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace ShapezShifter.Hijack
 {
-    public readonly struct RewirerHandle : IEquatable<RewirerHandle>
+    public readonly struct RewirerHandle : IEquatable<RewirerHandle>, IComparable<RewirerHandle>
     {
         internal static readonly RewirerHandle Invalid = default(RewirerHandle);
         private readonly int Id;
@@ -47,6 +47,11 @@ namespace ShapezShifter.Hijack
         public static bool operator !=(RewirerHandle lhs, RewirerHandle rhs)
         {
             return lhs.Id != rhs.Id;
+        }
+        
+        public int CompareTo(RewirerHandle other)
+        {
+            return Id.CompareTo(other.Id);
         }
 
         internal RewirerHandle Next()

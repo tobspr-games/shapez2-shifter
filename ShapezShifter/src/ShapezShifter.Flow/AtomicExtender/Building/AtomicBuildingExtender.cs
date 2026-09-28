@@ -131,6 +131,7 @@ namespace ShapezShifter.Flow.Atomic
 
         public void Build()
         {
+            RewirerHandle handle = GameRewirers.ReserveHandle();
             BuildExtenders();
 
             // This method creates a tree of links for extending the game to add a building completely (base data,
@@ -144,6 +145,7 @@ namespace ShapezShifter.Flow.Atomic
                 // Start the chain of extenders with the scenario extender. This also serves as a filter for only
                 // applying the other extenders if the scenario is part of the filter
                 RewirerChainLink scenarioRewirer = RewirerChain.BeginRewiringWith(
+                    handle,
                     new GameScenarioBuildingExtender(
                         scenarioFilter: ScenarioFilter,
                         progressionExtender: ProgressionExtender,
