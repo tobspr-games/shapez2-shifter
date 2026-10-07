@@ -9,6 +9,7 @@ namespace ShapezShifter.Hijack
         private readonly PlacementInitiatorsInterceptor PlacementInterceptor;
         private readonly BuildingsInterceptor BuildingsInterceptor;
         private readonly BuildingModulesInterceptor BuildingModulesInterceptor;
+        private readonly SerializedGameScenarioInterceptor SerializedGameScenarioInterceptor;
         private readonly GameScenarioInterceptor GameScenarioInterceptor;
         private readonly SimulationSystemsInterceptor SimulationSystemsInterceptor;
         private readonly PredictionSystemsInterceptor PredictionSystemsInterceptor;
@@ -27,6 +28,7 @@ namespace ShapezShifter.Hijack
             BuildingModulesInterceptor = new BuildingModulesInterceptor(rewirerProvider);
             IslandsInterceptor = new IslandsInterceptor(rewirerProvider: rewirerProvider, logger: logger);
             IslandModulesInterceptor = new IslandModulesInterceptor(rewirerProvider);
+            SerializedGameScenarioInterceptor = new SerializedGameScenarioInterceptor(rewirerProvider: rewirerProvider, logger: logger);
             GameScenarioInterceptor = new GameScenarioInterceptor(rewirerProvider: rewirerProvider, logger: logger);
             SimulationSystemsInterceptor = new SimulationSystemsInterceptor(rewirerProvider);
             PredictionSystemsInterceptor = new PredictionSystemsInterceptor(rewirerProvider);
@@ -38,6 +40,7 @@ namespace ShapezShifter.Hijack
 
         public void Dispose()
         {
+            SerializedGameScenarioInterceptor.Dispose();
             GameScenarioInterceptor.Dispose();
             BuildingModulesInterceptor.Dispose();
             BuildingsInterceptor.Dispose();
